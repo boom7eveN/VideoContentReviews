@@ -30,4 +30,4 @@
 * Удалять отзывы пользователей
 
 **ER-диаграмма БД**
-<img width="1580" height="679" alt="image" src="https://github.com/user-attachments/assets/9c04f0bf-14ea-4434-8dcf-9265673eb784" />
+<img width="1621" height="683" alt="image" src="https://github.com/user-attachments/assets/ea637289-8093-46a9-bec5-3d5559e2cd82" />
