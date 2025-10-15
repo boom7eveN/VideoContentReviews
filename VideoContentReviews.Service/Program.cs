@@ -4,19 +4,21 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)
     .Build();
 
+// var settings = VideoContentReviewsSettingsReader.Read(configuration);
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// DbContextConfigurator.ConfigureService(builder.Services, settings);
 SerilogConfigurator.ConfigureServices(builder);
 SwaggerConfigurator.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-SerilogConfigurator.ConfigureApplication(app);
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    SwaggerConfigurator.ConfigureApplication(app);
-}
+//DbContextConfigurator.ConfigureApplication(app);
+SerilogConfigurator.ConfigureApplication(app);
+SwaggerConfigurator.ConfigureApplication(app);
 
 app.UseHttpsRedirection();
 
