@@ -9,13 +9,13 @@ public class VideoContentEntity : BaseEntity
     public String Description { get; set; }
     public double UserAverageRating { get; set; }
     
-    public Guid TypeOfContentId { get; set; }
+    public int TypeOfContentId { get; set; }
     public TypeOfContentEntity TypeOfContentEntity { get; set; }
     
-    public Guid DirectorId { get; set; }
+    public int DirectorId { get; set; }
     public DirectorEntity DirectorEntity { get; set; }
     
-    public Guid ImageId { get; set; }
+    public int ImageId { get; set; }
     public ImageEntity ImageEntity { get; set; }
     
     public virtual ICollection<ReviewEntity> Reviews { get; set; }
