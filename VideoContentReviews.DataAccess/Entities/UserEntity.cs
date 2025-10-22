@@ -1,5 +1,7 @@
-﻿namespace VideoContentReviews.DataAccess.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace VideoContentReviews.DataAccess.Entities;
+[Table("Users")] 
 public class UserEntity : BaseEntity
 {
     public string Email { get; set; }

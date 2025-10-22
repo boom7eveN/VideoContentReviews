@@ -26,7 +26,7 @@ public class VideoContentReviewsDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ConfigureDirector();
-        modelBuilder.ConfigureFavorite();
+        modelBuilder.ConfigureFavourite();
         modelBuilder.ConfigureGenre();
         modelBuilder.ConfigureImage();
         modelBuilder.ConfigureReviews();

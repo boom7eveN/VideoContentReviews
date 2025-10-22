@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VideoContentReviews.DataAccess.Entities;
 
-namespace VideoContentReviews.DataAccess.Context.Configuration;
-
-public static class FavoriteConfiguration
+namespace VideoContentReviews.DataAccess.Context.Configuration; 
+public static class FavouriteConfiguration
 {
-    public static void ConfigureFavorite(this ModelBuilder modelBuilder)
+    public static void ConfigureFavourite(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<FavouriteEntity>().HasKey(f => f.Id);
         

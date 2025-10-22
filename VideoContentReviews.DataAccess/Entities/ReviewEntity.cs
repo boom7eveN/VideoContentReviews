@@ -1,5 +1,7 @@
-﻿namespace VideoContentReviews.DataAccess.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace VideoContentReviews.DataAccess.Entities;
+[Table("Reviews")] 
 public class ReviewEntity : BaseEntity
 {
     public int Rate{get; set;}

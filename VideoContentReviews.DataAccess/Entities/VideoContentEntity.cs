@@ -1,5 +1,7 @@
-﻿namespace VideoContentReviews.DataAccess.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace VideoContentReviews.DataAccess.Entities;
+[Table("VideoContent")] 
 public class VideoContentEntity : BaseEntity
 {
     public String Name { get; set; }

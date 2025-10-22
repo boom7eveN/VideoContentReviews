@@ -1,5 +1,7 @@
-﻿namespace VideoContentReviews.DataAccess.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace VideoContentReviews.DataAccess.Entities;
+[Table("VideoContentGenres")] 
 public class VideoContentGenreEntity : BaseEntity
 {
     public Guid VideoContentId { get; set; }
