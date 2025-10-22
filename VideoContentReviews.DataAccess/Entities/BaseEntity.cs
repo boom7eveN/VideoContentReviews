@@ -2,7 +2,7 @@
 
 namespace VideoContentReviews.DataAccess.Entities;
 
-public abstract class BaseEntity : IBaseEntity
+public abstract class BaseEntity
 {
     [Key]
     public int Id { get; set; }

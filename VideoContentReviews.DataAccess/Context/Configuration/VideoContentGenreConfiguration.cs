@@ -7,13 +7,18 @@ public static class VideoContentGenreConfiguration
 {
     public static void ConfigureVideoContentGenre(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<VideoContentGenre>().HasKey(vcg => new { vcg.VideoContentId, vcg.GenreId });
+        modelBuilder.Entity<VideoContentGenreEntity>().HasKey(vcg => new { vcg.Id});
+        modelBuilder.Entity<VideoContentGenreEntity>().HasIndex(vcg => new { vcg.ExternalId}).IsUnique();
         
-        modelBuilder.Entity<VideoContentGenre>().HasOne(vcg => vcg.VideoContent)
+        modelBuilder.Entity<VideoContentGenreEntity>()
+            .HasIndex(vcg => new { vcg.VideoContentId, vcg.GenreId })
+            .IsUnique();
+        
+        modelBuilder.Entity<VideoContentGenreEntity>().HasOne(vcg => vcg.VideoContentEntity)
             .WithMany(vc => vc.VideoContentsGenres)
             .HasForeignKey(vcg => vcg.VideoContentId);
         
-        modelBuilder.Entity<VideoContentGenre>().HasOne(vcg => vcg.Genre)
+        modelBuilder.Entity<VideoContentGenreEntity>().HasOne(vcg => vcg.GenreEntity)
             .WithMany(g => g.VideoContentsGenres)
             .HasForeignKey(vcg => vcg.GenreId);
     }

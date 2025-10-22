@@ -7,17 +7,18 @@ public static class VideoContentConfiguration
 {
     public static void ConfigureVideoContent(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<VideoContent>().HasKey(vc => vc.Id);
+        modelBuilder.Entity<VideoContentEntity>().HasKey(vc => vc.Id);
+        modelBuilder.Entity<VideoContentEntity>().HasIndex(vc => vc.ExternalId).IsUnique();
 
-        modelBuilder.Entity<VideoContent>().HasOne(vc => vc.TypeOfContent)
+        modelBuilder.Entity<VideoContentEntity>().HasOne(vc => vc.TypeOfContentEntity)
             .WithMany(tc => tc.VideoContents)
             .HasForeignKey(vc => vc.TypeOfContentId);
         
-        modelBuilder.Entity<VideoContent>().HasOne(i => i.Image)
+        modelBuilder.Entity<VideoContentEntity>().HasOne(i => i.ImageEntity)
             .WithMany(i=>i.VideoContents)
             .HasForeignKey(vc => vc.ImageId);
         
-        modelBuilder.Entity<VideoContent>().HasOne(vc => vc.Director)
+        modelBuilder.Entity<VideoContentEntity>().HasOne(vc => vc.DirectorEntity)
             .WithMany(d=> d.VideoContents)
             .HasForeignKey(vc => vc.DirectorId);
     }

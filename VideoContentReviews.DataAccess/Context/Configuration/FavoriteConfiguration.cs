@@ -7,13 +7,17 @@ public static class FavoriteConfiguration
 {
     public static void ConfigureFavorite(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Favourite>().HasKey(f => f.Id);
+        modelBuilder.Entity<FavouriteEntity>().HasKey(f => f.Id);
         
-        modelBuilder.Entity<Favourite>().HasOne(f => f.User)
+        modelBuilder.Entity<FavouriteEntity>()
+            .HasIndex(f => f.ExternalId)
+            .IsUnique();
+        
+        modelBuilder.Entity<FavouriteEntity>().HasOne(f => f.UserEntity)
             .WithMany(u => u.Favourites)
             .HasForeignKey(f => f.UserId);
 
-        modelBuilder.Entity<Favourite>().HasOne(f => f.VideoContent)
+        modelBuilder.Entity<FavouriteEntity>().HasOne(f => f.VideoContentEntity)
             .WithMany(vc => vc.Favourites)
             .HasForeignKey(f => f.VideoContentId);
     }

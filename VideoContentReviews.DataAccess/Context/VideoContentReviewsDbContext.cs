@@ -6,16 +6,16 @@ namespace VideoContentReviews.DataAccess.Context;
 
 public class VideoContentReviewsDbContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
-    public DbSet<VideoContent> VideoContents { get; set; }
-    public DbSet<Director> Directors { get; set; }
-    public DbSet<TypeOfContent> TypeOfContents { get; set; }
-    public DbSet<Genre> Genres { get; set; }
-    public DbSet<Image> Images { get; set; }
-    public DbSet<Review> Reviews { get; set; }
-    public DbSet<VideoContentGenre> VideoContentsGenres { get; set; }
-    public DbSet<Favourite> Favourites { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<UserRoleEntity> UserRoles { get; set; }
+    public DbSet<VideoContentEntity> VideoContents { get; set; }
+    public DbSet<DirectorEntity> Directors { get; set; }
+    public DbSet<TypeOfContentEntity> TypeOfContents { get; set; }
+    public DbSet<GenreEntity> Genres { get; set; }
+    public DbSet<ImageEntity> Images { get; set; }
+    public DbSet<ReviewEntity> Reviews { get; set; }
+    public DbSet<VideoContentGenreEntity> VideoContentsGenres { get; set; }
+    public DbSet<FavouriteEntity> Favourites { get; set; }
 
     public VideoContentReviewsDbContext(DbContextOptions options) : base(options)
     {

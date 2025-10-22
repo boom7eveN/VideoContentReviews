@@ -7,9 +7,9 @@ public static class UserConfiguration
 {
     public static void ConfigureUser(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasKey(u => u.Id);
-
-        modelBuilder.Entity<User>().HasOne(u => u.UserRole)
+        modelBuilder.Entity<UserEntity>().HasKey(u => u.Id);
+        modelBuilder.Entity<UserEntity>().HasIndex(u => u.ExternalId).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasOne(u => u.UserRoleEntity)
             .WithMany(ur => ur.Users)
             .HasForeignKey(u => u.UserRoleId);
     }

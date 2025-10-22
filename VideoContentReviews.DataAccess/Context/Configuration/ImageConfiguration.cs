@@ -7,6 +7,9 @@ public static class ImageConfiguration
 {
     public static void ConfigureImage(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Image>().HasKey(i => i.Id);
+        modelBuilder.Entity<ImageEntity>().HasKey(i => i.Id);
+        modelBuilder.Entity<ImageEntity>()
+            .HasIndex(i => i.ExternalId)
+            .IsUnique();
     }
 }

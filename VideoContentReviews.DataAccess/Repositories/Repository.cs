@@ -4,11 +4,11 @@ using VideoContentReviews.DataAccess.Entities;
 
 namespace VideoContentReviews.DataAccess.Repositories;
 
-public class BaseEntityRepository<T> : IBaseEntityRepository<T> where T : BaseEntity
+public class Repository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly IDbContextFactory<VideoContentReviewsDbContext> _contextFactory;
 
-    public BaseEntityRepository(IDbContextFactory<VideoContentReviewsDbContext> contextFactory)
+    public Repository(IDbContextFactory<VideoContentReviewsDbContext> contextFactory)
     {
         _contextFactory = contextFactory;
     }
@@ -34,7 +34,7 @@ public class BaseEntityRepository<T> : IBaseEntityRepository<T> where T : BaseEn
     public T Save(T entity)
     {
         using var context = _contextFactory.CreateDbContext();
-        if (context.Set<T>().Any(x => x.Id == entity.Id))
+        if (context.Set<T>().Any(x => x.Id == entity.Id)) //update
         {
             entity.ModificationTime = DateTime.UtcNow;
             var result = context.Set<T>().Attach(entity);
@@ -42,7 +42,7 @@ public class BaseEntityRepository<T> : IBaseEntityRepository<T> where T : BaseEn
             context.SaveChanges();
             return result.Entity;
         }
-        else
+        else //insert
         {
             entity.ExternalId = Guid.NewGuid();
             entity.CreationTime = DateTime.UtcNow;

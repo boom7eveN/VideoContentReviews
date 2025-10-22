@@ -7,6 +7,9 @@ public static class DirectorConfiguration
 {
     public static void ConfigureDirector(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Director>().HasKey(d => d.Id);
+        modelBuilder.Entity<DirectorEntity>().HasKey(d => d.Id);
+        modelBuilder.Entity<DirectorEntity>()
+            .HasIndex(d => d.ExternalId)
+            .IsUnique();
     }
 }

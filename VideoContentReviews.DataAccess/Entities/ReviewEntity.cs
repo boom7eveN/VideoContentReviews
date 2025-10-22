@@ -1,14 +1,14 @@
 ﻿namespace VideoContentReviews.DataAccess.Entities;
 
-public class Review : BaseEntity
+public class ReviewEntity : BaseEntity
 {
     public int Rate{get; set;}
     public String Text{get; set;}
     
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public UserEntity UserEntity { get; set; }
     
     public Guid VideoContentId { get; set; }
-    public VideoContent VideoContent { get; set; }
+    public VideoContentEntity VideoContentEntity { get; set; }
     
 }

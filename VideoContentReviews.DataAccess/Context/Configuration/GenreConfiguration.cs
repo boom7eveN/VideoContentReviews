@@ -7,7 +7,9 @@ public static class GenreConfiguration
 {
     public static void ConfigureGenre(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Genre>().HasKey(g => g.Id);
-        
+        modelBuilder.Entity<GenreEntity>().HasKey(g => g.Id);
+        modelBuilder.Entity<GenreEntity>()
+            .HasIndex(g => g.ExternalId)
+            .IsUnique();
     }
 }
