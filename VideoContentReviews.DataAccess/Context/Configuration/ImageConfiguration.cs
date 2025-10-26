@@ -11,5 +11,10 @@ public static class ImageConfiguration
         modelBuilder.Entity<ImageEntity>()
             .HasIndex(i => i.ExternalId)
             .IsUnique();
+        
+        modelBuilder.Entity<ImageEntity>().Property(i => i.FileExtension)
+            .HasConversion<int>() 
+            .IsRequired();
+        
     }
 }
