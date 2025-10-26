@@ -7,7 +7,6 @@ namespace VideoContentReviews.DataAccess.Context;
 public class VideoContentReviewsDbContext : DbContext
 {
     public DbSet<UserEntity> Users { get; set; }
-    public DbSet<UserRoleEntity> UserRoles { get; set; }
     public DbSet<VideoContentEntity> VideoContents { get; set; }
     public DbSet<DirectorEntity> Directors { get; set; }
     public DbSet<TypeOfContentEntity> TypeOfContents { get; set; }
@@ -32,7 +31,6 @@ public class VideoContentReviewsDbContext : DbContext
         modelBuilder.ConfigureReviews();
         modelBuilder.ConfigureTypeOfContent();
         modelBuilder.ConfigureUser();
-        modelBuilder.ConfigureUserRole();
         modelBuilder.ConfigureVideoContent();
         modelBuilder.ConfigureVideoContentGenre();
     }
