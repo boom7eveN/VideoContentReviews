@@ -22,4 +22,7 @@ SwaggerConfigurator.ConfigureApplication(app);
 
 app.UseHttpsRedirection();
 
+app.MapGet("/", () => "ОНО РАБОТАЕТ ОНО РАБОТАЕТ");
+
+
 app.Run();

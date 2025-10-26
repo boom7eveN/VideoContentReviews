@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoContentReviews.Service", "VideoContentReviews.Service\VideoContentReviews.Service.csproj", "{ADBCFCC2-AB21-46C7-B953-82A8D3ABE025}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoContentReviews.Service", "src/VideoContentReviews.Service\VideoContentReviews.Service.csproj", "{ADBCFCC2-AB21-46C7-B953-82A8D3ABE025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoContentReviews.BL", "VideoContentReviews.BL\VideoContentReviews.BL.csproj", "{C77E8D46-098C-4816-856A-297E61992979}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoContentReviews.BL", "src/VideoContentReviews.BL\VideoContentReviews.BL.csproj", "{C77E8D46-098C-4816-856A-297E61992979}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoContentReviews.DataAccess", "VideoContentReviews.DataAccess\VideoContentReviews.DataAccess.csproj", "{89B14EAD-2553-49E8-A997-8BDC73C9CF58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoContentReviews.DataAccess", "src/VideoContentReviews.DataAccess\VideoContentReviews.DataAccess.csproj", "{89B14EAD-2553-49E8-A997-8BDC73C9CF58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,7 @@ Global
 		{89B14EAD-2553-49E8-A997-8BDC73C9CF58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89B14EAD-2553-49E8-A997-8BDC73C9CF58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89B14EAD-2553-49E8-A997-8BDC73C9CF58}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

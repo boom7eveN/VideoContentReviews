@@ -11,6 +11,8 @@ public static class UserConfiguration
         
         modelBuilder.Entity<UserEntity>().HasIndex(u => u.ExternalId).IsUnique();
         
+        modelBuilder.Entity<UserEntity>().HasIndex(u => u.Email).IsUnique();
+        
         modelBuilder.Entity<UserEntity>().Property(u => u.UserRole)
             .HasConversion<int>()
             .IsRequired();
