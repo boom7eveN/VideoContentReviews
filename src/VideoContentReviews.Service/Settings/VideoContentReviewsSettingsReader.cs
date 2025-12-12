@@ -6,8 +6,12 @@
         {
             return new VideoContentReviewsSettings()
             {
-                VideoContentReviewsDbConnectionString =
-                    configuration.GetConnectionString("VideoContentReviewsDbContext")
+                VideoContentReviewsDbConnectionString = configuration.GetConnectionString("VideoContentReviewsDbContext"),
+                IdentityServerUri = configuration.GetValue<string>("IdentityServerSettings:Uri"),
+                ClientId = configuration.GetValue<string>("IdentityServerSettings:ClientId"),
+                ClientSecret = configuration.GetValue<string>("IdentityServerSettings:ClientSecret"),
+                MasterAdminEmail = configuration.GetValue<string>("IdentityServerSettings:MasterAdminEmail"),
+                MasterAdminPassword = configuration.GetValue<string>("IdentityServerSettings:MasterAdminPassword")
             };
         }
     }
