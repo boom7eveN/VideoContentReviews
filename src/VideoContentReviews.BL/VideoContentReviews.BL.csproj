@@ -14,4 +14,9 @@
       <PackageReference Include="AutoMapper" Version="16.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="User\Managers\" />
+      <Folder Include="User\Providers\" />
+    </ItemGroup>
+
 </Project>
