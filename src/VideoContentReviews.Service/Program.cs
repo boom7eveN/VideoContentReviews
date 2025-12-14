@@ -15,7 +15,7 @@ MapperConfigurator.ConfigureServices(builder.Services);
 AuthorizationConfigurator.ConfigureServices(builder.Services, settings);
 DbContextConfigurator.ConfigureService(builder.Services, settings);
 SerilogConfigurator.ConfigureServices(builder);
-SwaggerConfigurator.ConfigureServices(builder.Services, settings);
+SwaggerConfigurator.ConfigureServices(builder.Services);
 ServicesConfigurator.ConfigureServices(builder.Services, settings);
 builder.Services.AddControllers();
 
@@ -28,6 +28,7 @@ SwaggerConfigurator.ConfigureApplication(app);
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
-
+var repositoryInitializer = new RepositoryInitializer(settings);
+await repositoryInitializer.InitializeRepository(app);
 app.MapControllers();
 app.Run();

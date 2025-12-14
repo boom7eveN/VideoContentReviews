@@ -23,7 +23,6 @@ public class AuthProvider(
 {
     public async Task<TokensResponse> AuthorizeUserAsync(AuthorizeUserModel model)
     {
-        // Валидация входных данных
         var validator = new AuthorizeUserRequestValidator();
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
@@ -95,7 +94,7 @@ public class AuthProvider(
         var time = DateTime.UtcNow;
         user.CreationTime = time;
         user.ModificationTime = time;
-        user.UserName = model.Email;
+        user.UserName = model.UserName;
         user.Role = model.Role;
         
         var createResult = await userManager.CreateAsync(user, model.Password);

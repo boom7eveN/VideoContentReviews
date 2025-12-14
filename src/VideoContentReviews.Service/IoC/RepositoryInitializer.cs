@@ -1,0 +1,44 @@
+﻿using Microsoft.AspNetCore.Identity;
+using VideoContentReviews.BL.Auth;
+using VideoContentReviews.BL.Auth.Entities;
+using VideoContentReviews.DataAccess.Entities;
+using VideoContentReviews.DataAccess.Entities.Primitives;
+using VideoContentReviews.Service.Settings;
+
+namespace VideoContentReviews.Service.IoC;
+
+public class RepositoryInitializer
+{
+    private readonly string _masterAdminEmail;
+    private readonly string _masterAdminPassword;
+    public RepositoryInitializer(VideoContentReviewsSettings videoContentReviewsDbSettings)
+    {
+        _masterAdminEmail = videoContentReviewsDbSettings.MasterAdminEmail;
+        _masterAdminPassword = videoContentReviewsDbSettings.MasterAdminPassword;
+    }
+    
+    private async Task CreateGlobalAdmin(IAuthProvider authorizationProvider)
+    {
+        await authorizationProvider.RegisterUserAsync(new RegisterUserModel
+        {
+            UserName = "Moderator",
+            Email = _masterAdminEmail,
+            Password = _masterAdminPassword,
+            Role = UserRole.Moderator
+        });
+    }
+
+    public async Task InitializeRepository(IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+        var userManager = (UserManager<UserEntity>)scope.ServiceProvider
+            .GetRequiredService(typeof(UserManager<UserEntity>));
+        var user = await userManager.FindByEmailAsync(_masterAdminEmail);
+        if (user == null)
+        {
+            var authorizationProvider = (IAuthProvider)scope.ServiceProvider
+                .GetRequiredService(typeof(IAuthProvider));
+            await CreateGlobalAdmin(authorizationProvider);
+        }
+    }
+}

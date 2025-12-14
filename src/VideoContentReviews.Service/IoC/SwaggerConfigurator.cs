@@ -6,7 +6,7 @@ namespace VideoContentReviews.Service.IoC;
 
 public static class SwaggerConfigurator
 {
-    public static void ConfigureServices(IServiceCollection services, VideoContentReviewsSettings onfiguration)
+    public static void ConfigureServices(IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
