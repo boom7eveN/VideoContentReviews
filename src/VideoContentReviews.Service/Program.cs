@@ -10,19 +10,22 @@ var settings = VideoContentReviewsSettingsReader.Read(configuration);
 
 var builder = WebApplication.CreateBuilder(args);
 
+MapperConfigurator.ConfigureServices(builder.Services);
+AuthorizationConfigurator.ConfigureServices(builder.Services, settings);
 DbContextConfigurator.ConfigureService(builder.Services, settings);
 SerilogConfigurator.ConfigureServices(builder);
-SwaggerConfigurator.ConfigureServices(builder.Services);
+SwaggerConfigurator.ConfigureServices(builder.Services, settings);
+ServicesConfigurator.ConfigureServices(builder.Services, settings);
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
+AuthorizationConfigurator.ConfigureApplication(app);
 DbContextConfigurator.ConfigureApplication(app);
 SerilogConfigurator.ConfigureApplication(app);
 SwaggerConfigurator.ConfigureApplication(app);
 
 app.UseHttpsRedirection();
 
-app.MapGet("/", () => "ОНО РАБОТАЕТ ОНО РАБОТАЕТ");
-
-
+app.MapControllers();
 app.Run();

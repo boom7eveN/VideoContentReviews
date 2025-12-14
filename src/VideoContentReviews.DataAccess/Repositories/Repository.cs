@@ -4,7 +4,7 @@ using VideoContentReviews.DataAccess.Entities;
 
 namespace VideoContentReviews.DataAccess.Repositories;
 
-public class Repository<T> : IRepository<T> where T : BaseEntity
+public class Repository<T> : IRepository<T> where T : class, IBaseEntity
 {
     private readonly IDbContextFactory<VideoContentReviewsDbContext> _contextFactory;
 
