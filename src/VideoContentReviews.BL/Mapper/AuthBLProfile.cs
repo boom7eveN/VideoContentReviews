@@ -19,8 +19,10 @@ public class AuthBLProfile : Profile
             .ForMember(dest => dest.Reviews, opt => opt.Ignore())
             .ForMember(dest => dest.Favourites, opt => opt.Ignore())
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore()) 
-            .ForMember(dest => dest.Id, opt => opt.Ignore()); 
-        
-       
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+        CreateMap<Duende.IdentityModel.Client.TokenResponse, TokensResponse>()
+            .ForMember(dest => dest.AccessToken, opt => opt.MapFrom(src => src.AccessToken))
+            .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.RefreshToken));
     }
 }

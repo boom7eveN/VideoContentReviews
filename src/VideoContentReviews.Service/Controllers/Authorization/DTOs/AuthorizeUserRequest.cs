@@ -1,4 +1,4 @@
-﻿namespace VideoContentReviews.Service.Controllers.Authorization.Entities;
+﻿namespace VideoContentReviews.Service.Controllers.Authorization.DTOs;
 
 public class AuthorizeUserRequest
 {

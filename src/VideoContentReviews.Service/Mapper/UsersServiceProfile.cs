@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using VideoContentReviews.BL.Auth.Entities;
 using VideoContentReviews.BL.User.Entities;
-using VideoContentReviews.Service.Controllers.Authorization.Entities;
-using VideoContentReviews.Service.Controllers.Users.Entities;
+using VideoContentReviews.Service.Controllers.Authorization.DTOs;
+using VideoContentReviews.Service.Controllers.Users.DTOs;
+using VideoContentReviews.Service.Controllers.Users.DTOs.Requests;
+using VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
 namespace VideoContentReviews.Service.Mapper;
 
@@ -15,5 +17,8 @@ public class UsersServiceProfile : Profile
         CreateMap<UpdateUserRequest, UpdateUserModel>();
         CreateMap<UserFilter, UserModelFilter>();
         CreateMap<AuthorizeUserRequest, AuthorizeUserModel>();
+        CreateMap<UserModel, UserResponse>()
+            .ForMember(dest => dest.Id, opt => 
+                opt.MapFrom(src => src.ExternalId));
     }
 }

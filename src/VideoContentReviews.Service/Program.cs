@@ -1,4 +1,5 @@
 using VideoContentReviews.Service.IoC;
+using VideoContentReviews.Service.Middleware;
 using VideoContentReviews.Service.Settings;
 
 var configuration = new ConfigurationBuilder()
@@ -25,6 +26,7 @@ DbContextConfigurator.ConfigureApplication(app);
 SerilogConfigurator.ConfigureApplication(app);
 SwaggerConfigurator.ConfigureApplication(app);
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.MapControllers();

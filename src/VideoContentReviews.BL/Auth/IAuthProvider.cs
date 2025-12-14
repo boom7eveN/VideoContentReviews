@@ -5,6 +5,7 @@ namespace VideoContentReviews.BL.Auth;
 
 public interface IAuthProvider
 {
-    Task<TokenResponse> AuthorizeUserAsync(AuthorizeUserModel model);
+    Task<TokensResponse> AuthorizeUserAsync(AuthorizeUserModel model);
     Task<UserModel> RegisterUserAsync(RegisterUserModel model);
+    Task<TokensResponse> RefreshTokenAsync(string refreshToken);
 }

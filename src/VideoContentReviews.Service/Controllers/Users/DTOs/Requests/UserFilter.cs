@@ -1,4 +1,4 @@
-﻿namespace VideoContentReviews.Service.Controllers.Users.Entities;
+﻿namespace VideoContentReviews.Service.Controllers.Users.DTOs.Requests;
 
 public class UserFilter
 {
