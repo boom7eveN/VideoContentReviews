@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Duende.IdentityModel.Client;
 using Duende.IdentityServer.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using VideoContentReviews.BL.Auth.Entities;
+using VideoContentReviews.BL.Auth.Validator.Users;
 using VideoContentReviews.BL.User.Entities;
 using VideoContentReviews.BL.User.Exception;
 using VideoContentReviews.DataAccess.Entities;
-using TokenResponse = VideoContentReviews.BL.Auth.Entities.TokenResponse;
 
 namespace VideoContentReviews.BL.Auth;
 
@@ -20,8 +21,17 @@ public class AuthProvider(
     string clientSecret)
     : IAuthProvider
 {
-    public async Task<TokenResponse> AuthorizeUserAsync(AuthorizeUserModel model)
+    public async Task<TokensResponse> AuthorizeUserAsync(AuthorizeUserModel model)
     {
+        // Валидация входных данных
+        var validator = new AuthorizeUserRequestValidator();
+        var validationResult = await validator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+        {
+            throw new BusinessLogicException(ResultCode.ValidationError, 
+                string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
+        }
+
         var user = await userManager.FindByEmailAsync(model.Email);
         if (user is null)
         {
@@ -57,7 +67,7 @@ public class AuthProvider(
             throw new BusinessLogicException(ResultCode.IdentityServerError);
         }
         
-        return new TokenResponse
+        return new TokensResponse
         {
             AccessToken = tokenResponse.AccessToken,
             RefreshToken = tokenResponse.RefreshToken
@@ -66,6 +76,14 @@ public class AuthProvider(
 
     public async Task<UserModel> RegisterUserAsync(RegisterUserModel model)
     {
+        var validator = new RegisterUserRequestValidator();
+        var validationResult = await validator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+        {
+            throw new BusinessLogicException(ResultCode.ValidationError, 
+                string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
+        }
+
         var user = await userManager.FindByEmailAsync(model.Email);
         if (user is not null)
         {
@@ -88,5 +106,39 @@ public class AuthProvider(
         }
         
         return mapper.Map<UserModel>(user);
+    }
+
+    public async Task<TokensResponse> RefreshTokenAsync(string refreshToken)
+    {
+        if (string.IsNullOrWhiteSpace(refreshToken))
+        {
+            throw new BusinessLogicException(ResultCode.ValidationError, "Refresh token is required");
+        }
+
+        var client = httpClientFactory.CreateClient();
+        var discoveryDocument = await client.GetDiscoveryDocumentAsync(identityServerUri);
+        if (discoveryDocument.IsError)
+        {
+            throw new BusinessLogicException(ResultCode.IdentityServerError);
+        }
+
+        var tokenResponse = await client.RequestRefreshTokenAsync(new RefreshTokenRequest()
+        {
+            Address = discoveryDocument.TokenEndpoint,
+            ClientId = clientId,
+            ClientSecret = clientSecret,
+            RefreshToken = refreshToken
+        });
+        
+        if (tokenResponse.IsError)
+        {
+            throw new BusinessLogicException(ResultCode.IdentityServerError);
+        }
+
+        return new TokensResponse
+        {
+            AccessToken = tokenResponse.AccessToken,
+            RefreshToken = tokenResponse.RefreshToken
+        };
     }
 }

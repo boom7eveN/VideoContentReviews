@@ -1,4 +1,6 @@
-﻿namespace VideoContentReviews.BL.User.Exception;
+﻿using System.ComponentModel;
+
+namespace VideoContentReviews.BL.User.Exception;
 
 public class BusinessLogicException : System.Exception
 {
@@ -17,8 +19,21 @@ public class BusinessLogicException : System.Exception
         ResultCode = resultCode;
     }
     
-    public BusinessLogicException(ResultCode resultCode, string message) : base(resultCode.ToString() + message)
+    public BusinessLogicException(ResultCode resultCode, string message) : base($"{resultCode}: {message}")
     {
         ResultCode = resultCode;
+    }
+    
+    public BusinessLogicException(ResultCode resultCode, string message, bool useDescription = false) 
+        : base(useDescription ? GetEnumDescription(resultCode) + ": " + message : $"{resultCode}: {message}")
+    {
+        ResultCode = resultCode;
+    }
+    
+    private static string GetEnumDescription(ResultCode value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+        return attribute == null ? value.ToString() : attribute.Description;
     }
 }

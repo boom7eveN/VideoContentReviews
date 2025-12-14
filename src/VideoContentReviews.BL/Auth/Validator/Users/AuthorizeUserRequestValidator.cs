@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using VideoContentReviews.Service.Controllers.Authorization.Entities;
+using VideoContentReviews.BL.Auth.Entities;
 
-namespace VideoContentReviews.Service.Validator.Users;
+namespace VideoContentReviews.BL.Auth.Validator.Users;
 
-public class AuthorizeUserRequestValidator : AbstractValidator<AuthorizeUserRequest>
+public class AuthorizeUserRequestValidator : AbstractValidator<AuthorizeUserModel>
 {
     public AuthorizeUserRequestValidator()
     {

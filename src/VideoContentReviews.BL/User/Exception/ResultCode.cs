@@ -18,4 +18,7 @@ public enum ResultCode
     
     [Description("User creation failure.")]
     UserCreationFailure = 005,
+    
+    [Description("Validation error.")]
+    ValidationError = 006,
 }
