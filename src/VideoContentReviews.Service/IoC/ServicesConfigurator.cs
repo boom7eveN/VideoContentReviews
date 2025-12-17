@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using VideoContentReviews.BL.Auth;
-using VideoContentReviews.BL.Director.Managers;
-using VideoContentReviews.BL.Image.Manager;
-using VideoContentReviews.BL.TypeOfContent.Managers;
+using VideoContentReviews.BL.Directors.Managers;
+using VideoContentReviews.BL.Images.Managers;
+using VideoContentReviews.BL.TypesOfContent.Managers;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Repositories;
 using VideoContentReviews.Service.Settings;

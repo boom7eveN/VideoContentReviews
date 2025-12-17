@@ -1,4 +1,4 @@
-﻿using VideoContentReviews.BL.User.Entities;
+﻿using VideoContentReviews.BL.Users.Entities;
 
 namespace VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 

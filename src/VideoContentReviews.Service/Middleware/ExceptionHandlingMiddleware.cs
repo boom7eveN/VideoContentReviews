@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using AutoMapper;
-using VideoContentReviews.BL.Exception;
+using VideoContentReviews.BL.Exceptions;
 using VideoContentReviews.Service.Exceptions;
 
 namespace VideoContentReviews.Service.Middleware;

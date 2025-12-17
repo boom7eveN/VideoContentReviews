@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Duende.IdentityModel.Client;
 using Duende.IdentityServer.Models;
-using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using VideoContentReviews.BL.Auth.Entities;
-using VideoContentReviews.BL.Auth.Validator.Users;
-using VideoContentReviews.BL.Exception;
-using VideoContentReviews.BL.User.Entities;
+using VideoContentReviews.BL.Auth.Validators;
+using VideoContentReviews.BL.Exceptions;
+using VideoContentReviews.BL.Users.Entities;
 using VideoContentReviews.DataAccess.Entities;
 
 namespace VideoContentReviews.BL.Auth;

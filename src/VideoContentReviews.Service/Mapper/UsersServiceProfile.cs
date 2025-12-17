@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using VideoContentReviews.BL.Auth.Entities;
-using VideoContentReviews.BL.User.Entities;
+using VideoContentReviews.BL.Users.Entities;
 using VideoContentReviews.Service.Controllers.Authorization.DTOs;
 using VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
