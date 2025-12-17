@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace VideoContentReviews.BL.User.Exception;
+namespace VideoContentReviews.BL.Exception;
 
 public enum ResultCode
 {
@@ -21,4 +21,16 @@ public enum ResultCode
     
     [Description("Validation error.")]
     ValidationError = 006,
+    
+    [Description("Videocontent not found.")]
+    VideoContentNotFound = 007,
+    
+    [Description("Type of content not found.")]
+    TypeOfContentNotFound = 008,
+    
+    [Description("Director not found.")]
+    DirectorNotFound = 009,
+    
+    [Description("Director already exists.")]
+    DirectorAlreadyExists = 010,
 }

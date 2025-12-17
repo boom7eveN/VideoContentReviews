@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using VideoContentReviews.BL.Auth;
-using VideoContentReviews.DataAccess.Context;
+using VideoContentReviews.BL.Director.Managers;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Repositories;
 using VideoContentReviews.Service.Settings;
@@ -24,6 +23,14 @@ public static class ServicesConfigurator
                 settings.ClientId,
                 settings.ClientSecret));
         
-        
+        //directors
+        services.AddScoped<IDirectorManager>(provider =>
+        {
+            var repository = provider.GetRequiredService<IRepository<DirectorEntity>>();
+            var mapper = provider.GetRequiredService<IMapper>();
+            return new DirectorManager(repository, mapper);
+        });
+
+
     }
 }

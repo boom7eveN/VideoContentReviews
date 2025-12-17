@@ -1,4 +1,4 @@
-﻿namespace VideoContentReviews.Service.Controllers.Users.DTOs.Requests;
+﻿namespace VideoContentReviews.Service.Controllers.Authorization.DTOs;
 
 public class RegisterUserRequest
 {

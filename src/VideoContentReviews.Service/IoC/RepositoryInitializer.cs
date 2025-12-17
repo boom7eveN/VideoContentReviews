@@ -7,16 +7,11 @@ using VideoContentReviews.Service.Settings;
 
 namespace VideoContentReviews.Service.IoC;
 
-public class RepositoryInitializer
+public class RepositoryInitializer(VideoContentReviewsSettings videoContentReviewsDbSettings)
 {
-    private readonly string _masterAdminEmail;
-    private readonly string _masterAdminPassword;
-    public RepositoryInitializer(VideoContentReviewsSettings videoContentReviewsDbSettings)
-    {
-        _masterAdminEmail = videoContentReviewsDbSettings.MasterAdminEmail;
-        _masterAdminPassword = videoContentReviewsDbSettings.MasterAdminPassword;
-    }
-    
+    private readonly string _masterAdminEmail = videoContentReviewsDbSettings.MasterAdminEmail;
+    private readonly string _masterAdminPassword = videoContentReviewsDbSettings.MasterAdminPassword;
+
     private async Task CreateGlobalAdmin(IAuthProvider authorizationProvider)
     {
         await authorizationProvider.RegisterUserAsync(new RegisterUserModel

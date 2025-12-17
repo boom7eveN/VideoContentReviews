@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.OpenApi.Models;
-using VideoContentReviews.Service.Settings;
+﻿using Microsoft.OpenApi.Models;
 
 namespace VideoContentReviews.Service.IoC;
 
@@ -26,6 +24,21 @@ public static class SwaggerConfigurator
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
                 Description = "Введите JWT токен в формате: Bearer {токен}"
+            });
+            
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
             });
 
            

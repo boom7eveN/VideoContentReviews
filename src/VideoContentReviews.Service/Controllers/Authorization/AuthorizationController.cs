@@ -1,12 +1,8 @@
-﻿using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using VideoContentReviews.BL.Auth;
 using VideoContentReviews.BL.Auth.Entities;
-using VideoContentReviews.BL.Auth.Validator.Users;
-using VideoContentReviews.BL.User.Exception;
 using VideoContentReviews.Service.Controllers.Authorization.DTOs;
-using VideoContentReviews.Service.Controllers.Users.DTOs.Requests;
 using VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
 namespace VideoContentReviews.Service.Controllers.Authorization;
@@ -14,24 +10,24 @@ namespace VideoContentReviews.Service.Controllers.Authorization;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthorizationController(IAuthProvider authorizationProvider, IMapper mapper)
+public class AuthorizationController(IAuthProvider _authorizationProvider, IMapper _mapper)
     : ControllerBase
 {
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> RegisterUser([FromQuery] RegisterUserRequest request)
     {
-        var registerModel = mapper.Map<RegisterUserModel>(request);
-        var userModel = await authorizationProvider.RegisterUserAsync(registerModel);
-        return Ok(mapper.Map<UserResponse>(userModel));
+        var registerModel = _mapper.Map<RegisterUserModel>(request);
+        var userModel = await _authorizationProvider.RegisterUserAsync(registerModel);
+        return Ok(_mapper.Map<UserResponse>(userModel));
     }
 
     [HttpGet]
     [Route("login")]
     public async Task<IActionResult> LoginUser([FromQuery] AuthorizeUserRequest request)
     {
-        var authorizeModel = mapper.Map<AuthorizeUserModel>(request);
-        var tokens = await authorizationProvider.AuthorizeUserAsync(authorizeModel);
+        var authorizeModel = _mapper.Map<AuthorizeUserModel>(request);
+        var tokens = await _authorizationProvider.AuthorizeUserAsync(authorizeModel);
         return Ok(tokens);
     }
     
@@ -39,7 +35,7 @@ public class AuthorizationController(IAuthProvider authorizationProvider, IMappe
     [Route("refresh")]
     public async Task<IActionResult> RefreshToken([FromQuery] RefreshTokenRequest request)
     {
-        var refreshToken = await authorizationProvider.RefreshTokenAsync(request.RefreshToken);
+        var refreshToken = await _authorizationProvider.RefreshTokenAsync(request.RefreshToken);
         return Ok(refreshToken);
     }
 }

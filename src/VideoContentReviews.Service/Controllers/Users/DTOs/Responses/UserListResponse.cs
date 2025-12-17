@@ -1,6 +1,6 @@
 ﻿using VideoContentReviews.BL.User.Entities;
 
-namespace VideoContentReviews.Service.Controllers.Users.DTOs.Requests;
+namespace VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
 public class UsersListResponse
 {

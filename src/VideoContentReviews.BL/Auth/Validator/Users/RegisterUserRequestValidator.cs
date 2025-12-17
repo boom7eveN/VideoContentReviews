@@ -3,9 +3,9 @@ using VideoContentReviews.BL.Auth.Entities;
 
 namespace VideoContentReviews.BL.Auth.Validator.Users;
 
-public class RegisterUserRequestValidator : AbstractValidator<RegisterUserModel>
+public class RegisterUserModelValidator : AbstractValidator<RegisterUserModel>
 {
-    public RegisterUserRequestValidator()
+    public RegisterUserModelValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()

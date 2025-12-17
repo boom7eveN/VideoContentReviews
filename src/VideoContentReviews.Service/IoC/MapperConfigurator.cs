@@ -14,6 +14,9 @@ public abstract class MapperConfigurator
             config.AddProfile<UserBLProfile>();
             // auth
             config.AddProfile<AuthBLProfile>();
+            //directors
+            config.AddProfile<DirectorServiceProfile>();
+            config.AddProfile<DirectorBLProfile>();
         });
     }
 }

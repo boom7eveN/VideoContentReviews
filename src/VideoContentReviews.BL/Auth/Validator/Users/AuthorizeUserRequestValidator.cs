@@ -3,9 +3,9 @@ using VideoContentReviews.BL.Auth.Entities;
 
 namespace VideoContentReviews.BL.Auth.Validator.Users;
 
-public class AuthorizeUserRequestValidator : AbstractValidator<AuthorizeUserModel>
+public class AuthorizeUserModelValidator : AbstractValidator<AuthorizeUserModel>
 {
-    public AuthorizeUserRequestValidator()
+    public AuthorizeUserModelValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()

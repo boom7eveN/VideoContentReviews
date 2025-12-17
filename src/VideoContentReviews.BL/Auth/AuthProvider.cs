@@ -5,8 +5,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using VideoContentReviews.BL.Auth.Entities;
 using VideoContentReviews.BL.Auth.Validator.Users;
+using VideoContentReviews.BL.Exception;
 using VideoContentReviews.BL.User.Entities;
-using VideoContentReviews.BL.User.Exception;
 using VideoContentReviews.DataAccess.Entities;
 
 namespace VideoContentReviews.BL.Auth;
@@ -23,7 +23,7 @@ public class AuthProvider(
 {
     public async Task<TokensResponse> AuthorizeUserAsync(AuthorizeUserModel model)
     {
-        var validator = new AuthorizeUserRequestValidator();
+        var validator = new AuthorizeUserModelValidator();
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
@@ -75,7 +75,7 @@ public class AuthProvider(
 
     public async Task<UserModel> RegisterUserAsync(RegisterUserModel model)
     {
-        var validator = new RegisterUserRequestValidator();
+        var validator = new RegisterUserModelValidator();
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {

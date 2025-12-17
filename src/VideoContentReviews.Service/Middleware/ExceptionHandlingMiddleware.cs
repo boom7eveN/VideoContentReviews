@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-using VideoContentReviews.BL.User.Exception;
+using VideoContentReviews.BL.Exception;
 
 namespace VideoContentReviews.Service.Middleware;
 

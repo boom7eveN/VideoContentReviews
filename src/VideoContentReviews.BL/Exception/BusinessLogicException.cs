@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace VideoContentReviews.BL.User.Exception;
+namespace VideoContentReviews.BL.Exception;
 
 public class BusinessLogicException : System.Exception
 {
