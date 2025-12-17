@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using VideoContentReviews.BL.Director.Entities;
-using VideoContentReviews.BL.Director.Validator;
+using VideoContentReviews.BL.Director.Validators;
 using VideoContentReviews.BL.Exception;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Repositories;
@@ -16,14 +16,14 @@ public class DirectorManager(IRepository<DirectorEntity> directorsRepository, IM
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
-            throw new BusinessLogicException(ResultCode.ValidationError, 
+            throw new BusinessLogicException(BLResultCode.ValidationError, 
                 string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
         var sameDirectors = await directorsRepository.GetAllAsync(x => x.FirstName == model.FirstName && x.LastName == model.LastName);
         if (sameDirectors.Any())
         {
-            throw new BusinessLogicException(ResultCode.DirectorAlreadyExists);
+            throw new BusinessLogicException(BLResultCode.DirectorAlreadyExists);
         }
         
         var entity = mapper.Map<DirectorEntity>(model);

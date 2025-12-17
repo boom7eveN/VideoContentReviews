@@ -17,6 +17,12 @@ public abstract class MapperConfigurator
             //directors
             config.AddProfile<DirectorServiceProfile>();
             config.AddProfile<DirectorBLProfile>();
+            //content
+            config.AddProfile<TypeOfContentBLProfile>();
+            config.AddProfile<TypeOfContentServiceProfile>();
+            //image
+            config.AddProfile<ImageServiceProfile>();
+            config.AddProfile<ImageBLProfile>();
         });
     }
 }

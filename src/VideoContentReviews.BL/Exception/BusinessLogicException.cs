@@ -4,7 +4,7 @@ namespace VideoContentReviews.BL.Exception;
 
 public class BusinessLogicException : System.Exception
 {
-    public ResultCode? ResultCode { get; init; }
+    public BLResultCode? BlResultCode { get; init; }
 
     public BusinessLogicException()
     {
@@ -14,23 +14,23 @@ public class BusinessLogicException : System.Exception
     {
     }
 
-    public BusinessLogicException(ResultCode resultCode) : base(resultCode.ToString())
+    public BusinessLogicException(BLResultCode blResultCode) : base(blResultCode.ToString())
     {
-        ResultCode = resultCode;
+        BlResultCode = blResultCode;
     }
     
-    public BusinessLogicException(ResultCode resultCode, string message) : base($"{resultCode}: {message}")
+    public BusinessLogicException(BLResultCode blResultCode, string message) : base($"{blResultCode}: {message}")
     {
-        ResultCode = resultCode;
+        BlResultCode = blResultCode;
     }
     
-    public BusinessLogicException(ResultCode resultCode, string message, bool useDescription = false) 
-        : base(useDescription ? GetEnumDescription(resultCode) + ": " + message : $"{resultCode}: {message}")
+    public BusinessLogicException(BLResultCode blResultCode, string message, bool useDescription = false) 
+        : base(useDescription ? GetEnumDescription(blResultCode) + ": " + message : $"{blResultCode}: {message}")
     {
-        ResultCode = resultCode;
+        BlResultCode = blResultCode;
     }
     
-    private static string GetEnumDescription(ResultCode value)
+    private static string GetEnumDescription(BLResultCode value)
     {
         var field = value.GetType().GetField(value.ToString());
         var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));

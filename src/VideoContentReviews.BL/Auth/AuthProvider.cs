@@ -27,27 +27,27 @@ public class AuthProvider(
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
-            throw new BusinessLogicException(ResultCode.ValidationError, 
+            throw new BusinessLogicException(BLResultCode.ValidationError, 
                 string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
         var user = await userManager.FindByEmailAsync(model.Email);
         if (user is null)
         {
-            throw new BusinessLogicException(ResultCode.UserNotFound);
+            throw new BusinessLogicException(BLResultCode.UserNotFound);
         }
         
         var verificationResult = await signInManager.CheckPasswordSignInAsync(user, model.Password, false);
         if (!verificationResult.Succeeded)
         {
-            throw new BusinessLogicException(ResultCode.EmailOrPasswordIsIncorrect);
+            throw new BusinessLogicException(BLResultCode.EmailOrPasswordIsIncorrect);
         }
         
         var client = httpClientFactory.CreateClient();
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(identityServerUri);
         if (discoveryDocument.IsError)
         {
-            throw new BusinessLogicException(ResultCode.IdentityServerError);
+            throw new BusinessLogicException(BLResultCode.IdentityServerError);
         }
 
         var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
@@ -63,7 +63,7 @@ public class AuthProvider(
 
         if (tokenResponse.IsError)
         {
-            throw new BusinessLogicException(ResultCode.IdentityServerError);
+            throw new BusinessLogicException(BLResultCode.IdentityServerError);
         }
         
         return new TokensResponse
@@ -79,14 +79,14 @@ public class AuthProvider(
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
-            throw new BusinessLogicException(ResultCode.ValidationError, 
+            throw new BusinessLogicException(BLResultCode.ValidationError, 
                 string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
         var user = await userManager.FindByEmailAsync(model.Email);
         if (user is not null)
         {
-            throw new BusinessLogicException(ResultCode.UserAlreadyExists);
+            throw new BusinessLogicException(BLResultCode.UserAlreadyExists);
         }
         
         user = mapper.Map<UserEntity>(model);
@@ -100,7 +100,7 @@ public class AuthProvider(
         var createResult = await userManager.CreateAsync(user, model.Password);
         if (!createResult.Succeeded)
         {
-            throw new BusinessLogicException(ResultCode.UserCreationFailure,
+            throw new BusinessLogicException(BLResultCode.UserCreationFailure,
                 string.Join(Environment.NewLine, createResult.Errors.Select(e => e.Description)));
         }
         
@@ -111,14 +111,14 @@ public class AuthProvider(
     {
         if (string.IsNullOrWhiteSpace(refreshToken))
         {
-            throw new BusinessLogicException(ResultCode.ValidationError, "Refresh token is required");
+            throw new BusinessLogicException(BLResultCode.ValidationError, "Refresh token is required");
         }
 
         var client = httpClientFactory.CreateClient();
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(identityServerUri);
         if (discoveryDocument.IsError)
         {
-            throw new BusinessLogicException(ResultCode.IdentityServerError);
+            throw new BusinessLogicException(BLResultCode.IdentityServerError);
         }
 
         var tokenResponse = await client.RequestRefreshTokenAsync(new RefreshTokenRequest()
@@ -131,7 +131,7 @@ public class AuthProvider(
         
         if (tokenResponse.IsError)
         {
-            throw new BusinessLogicException(ResultCode.IdentityServerError);
+            throw new BusinessLogicException(BLResultCode.IdentityServerError);
         }
 
         return new TokensResponse

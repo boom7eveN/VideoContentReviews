@@ -16,7 +16,7 @@ public class DirectorsController(IDirectorManager directorManager, IMapper mappe
     [HttpPost]
     [Route("create")]
     [Authorize(Roles = "Moderator")]
-    public async Task<ActionResult<DirectorManager>> CreateDirector([FromQuery] CreateDirectorRequest request)
+    public async Task<IActionResult> CreateDirector([FromQuery] CreateDirectorRequest request)
     {
         var createdModel = mapper.Map<CreateDirectorModel>(request);
         var directorModel = await directorManager.CreateDirectorAsync(createdModel);

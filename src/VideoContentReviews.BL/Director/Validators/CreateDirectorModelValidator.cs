@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using VideoContentReviews.BL.Director.Entities;
 
-namespace VideoContentReviews.BL.Director.Validator;
+namespace VideoContentReviews.BL.Director.Validators;
 
 public class CreateDirectorModelValidator : AbstractValidator<CreateDirectorModel>
 {

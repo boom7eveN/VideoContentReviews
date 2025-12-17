@@ -2,9 +2,9 @@
 
 namespace VideoContentReviews.BL.Exception;
 
-public enum ResultCode
+public enum BLResultCode
 {
-    [Description("User not found")]
+    [Description("User not found.")]
     UserNotFound = 001,
     
     [Description("User already exists.")]
@@ -33,4 +33,10 @@ public enum ResultCode
     
     [Description("Director already exists.")]
     DirectorAlreadyExists = 010,
+    
+    [Description("Type of content already exists.")]
+    TypeOfContentAlreadyExists = 011,
+    
+    [Description("Image already exists.")]
+    ImageAlreadyExists  = 012,
 }

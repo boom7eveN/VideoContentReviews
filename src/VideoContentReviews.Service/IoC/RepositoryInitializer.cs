@@ -11,12 +11,13 @@ public class RepositoryInitializer(VideoContentReviewsSettings videoContentRevie
 {
     private readonly string _masterAdminEmail = videoContentReviewsDbSettings.MasterAdminEmail;
     private readonly string _masterAdminPassword = videoContentReviewsDbSettings.MasterAdminPassword;
+    private readonly string _masterUserName = videoContentReviewsDbSettings.MasterUserName;
 
     private async Task CreateGlobalAdmin(IAuthProvider authorizationProvider)
     {
         await authorizationProvider.RegisterUserAsync(new RegisterUserModel
         {
-            UserName = "Moderator",
+            UserName = _masterUserName,
             Email = _masterAdminEmail,
             Password = _masterAdminPassword,
             Role = UserRole.Moderator
