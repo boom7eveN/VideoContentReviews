@@ -23,6 +23,10 @@ public abstract class MapperConfigurator
             //image
             config.AddProfile<ImageServiceProfile>();
             config.AddProfile<ImageBLProfile>();
+            //genre
+            //image
+            config.AddProfile<GenreServiceProfile>();
+            config.AddProfile<GenreBLProfile>();
         });
     }
 }

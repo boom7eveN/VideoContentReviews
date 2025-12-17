@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using VideoContentReviews.BL.Auth;
 using VideoContentReviews.BL.Directors.Managers;
+using VideoContentReviews.BL.Genres.Managers;
 using VideoContentReviews.BL.Images.Managers;
 using VideoContentReviews.BL.TypesOfContent.Managers;
 using VideoContentReviews.DataAccess.Entities;
@@ -45,6 +46,13 @@ public static class ServicesConfigurator
             var repository = provider.GetRequiredService<IRepository<ImageEntity>>();
             var mapper = provider.GetRequiredService<IMapper>();
             return new ImageManager(repository, mapper);
+        });
+        //genres
+        services.AddScoped<IGenreManager>(provider =>
+        {
+            var repository = provider.GetRequiredService<IRepository<GenreEntity>>();
+            var mapper = provider.GetRequiredService<IMapper>();
+            return new GenreManager(repository, mapper);
         });
     }
 }

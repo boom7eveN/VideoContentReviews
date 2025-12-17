@@ -21,13 +21,13 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-AuthorizationConfigurator.ConfigureApplication(app);
-DbContextConfigurator.ConfigureApplication(app);
-SerilogConfigurator.ConfigureApplication(app);
-SwaggerConfigurator.ConfigureApplication(app);
-
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
+app.UseRouting();
+AuthorizationConfigurator.ConfigureApplication(app); 
+SwaggerConfigurator.ConfigureApplication(app);
+DbContextConfigurator.ConfigureApplication(app);
+SerilogConfigurator.ConfigureApplication(app);
 var repositoryInitializer = new RepositoryInitializer(settings);
 await repositoryInitializer.InitializeRepository(app);
 app.MapControllers();

@@ -39,4 +39,7 @@ public enum BLResultCode
     
     [Description("Image already exists.")]
     ImageAlreadyExists  = 012,
+    
+    [Description("Genre already exists.")]
+    GenreAlreadyExists = 013,
 }
