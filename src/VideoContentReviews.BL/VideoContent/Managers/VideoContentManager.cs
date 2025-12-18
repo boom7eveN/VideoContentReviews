@@ -1,0 +1,112 @@
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using VideoContentReviews.BL.Exceptions;
+using VideoContentReviews.BL.Genres.Entities;
+using VideoContentReviews.BL.VideoContent.Entities;
+using VideoContentReviews.BL.VideoContent.Validators;
+using VideoContentReviews.DataAccess.Context;
+using VideoContentReviews.DataAccess.Entities;
+using VideoContentReviews.DataAccess.Repositories;
+
+namespace VideoContentReviews.BL.VideoContent.Managers;
+
+public class VideoContentManager(
+    IRepository<VideoContentEntity> videoContentRepository,
+    IRepository<TypeOfContentEntity> typeOfContentRepository,
+    IRepository<DirectorEntity> directorRepository,
+    IRepository<ImageEntity> imageRepository,
+    IRepository<GenreEntity> genreRepository,
+    IRepository<VideoContentGenreEntity> videoContentGenreRepository,
+    IDbContextFactory<VideoContentReviewsDbContext> contextFactory,
+    IMapper mapper)
+    : IVideoContentManager
+{
+    public async Task<VideoContentModel> CreateVideoContentAsync(CreateVideoContentModel model)
+    {
+        var validator = new CreateVideoContentModelValidator();
+        var validationResult = await validator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+        {
+            throw new BusinessLogicException(BLResultCode.ValidationError,
+                string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
+        }
+
+        var sameVideoContent =
+            await videoContentRepository.GetAllAsync(x =>
+                x.Name == model.Name && x.YearOfRelease == model.YearOfRelease);
+
+        if (sameVideoContent.Any())
+        {
+            throw new BusinessLogicException(BLResultCode.VideoContentAlreadyExists);
+        }
+
+        var typeOfContent = await typeOfContentRepository.GetByIdAsync(model.TypeOfContentExternalId);
+        if (typeOfContent == null)
+        {
+            throw new BusinessLogicException(BLResultCode.TypeOfContentNotFound);
+        }
+
+        var director = await directorRepository.GetByIdAsync(model.DirectorExternalId);
+        if (director == null)
+        {
+            throw new BusinessLogicException(BLResultCode.DirectorNotFound);
+        }
+
+        var image = await imageRepository.GetByIdAsync(model.ImageExternalId);
+        if (image == null)
+        {
+            throw new BusinessLogicException(BLResultCode.ImageNotFound);
+        }
+
+        var genres = new List<GenreEntity>();
+        foreach (var genreExternalId in model.GenreExternalIds)
+        {
+            var genre = await genreRepository.GetByIdAsync(genreExternalId);
+            if (genre == null)
+            {
+                throw new BusinessLogicException(BLResultCode.GenreNotFound,
+                    $"Genre with external ID {genreExternalId} not found");
+            }
+
+            genres.Add(genre);
+        }
+
+        var entity = mapper.Map<VideoContentEntity>(model);
+        entity.TypeOfContentId = typeOfContent.Id;
+        entity.DirectorId = director.Id;
+        entity.ImageId = image.Id;
+
+        entity = await videoContentRepository.SaveAsync(entity);
+
+        foreach (var genre in genres)
+        {
+            var videoContentGenre = new VideoContentGenreEntity
+            {
+                VideoContentId = entity.Id,
+                GenreId = genre.Id,
+                AddedTime = DateTime.UtcNow,
+            };
+
+            await videoContentGenreRepository.SaveAsync(videoContentGenre);
+        }
+        
+        await using var context = await contextFactory.CreateDbContextAsync();
+        
+        var videoContentWithRelations = await context.VideoContents
+            .Include(vc => vc.TypeOfContentEntity)
+            .Include(vc => vc.DirectorEntity)
+            .Include(vc => vc.ImageEntity)
+            .Include(vc => vc.VideoContentsGenres)
+            .ThenInclude(vcg => vcg.GenreEntity)
+            .FirstOrDefaultAsync(vc => vc.Id == entity.Id);
+
+        if (videoContentWithRelations == null)
+        {
+            throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
+        }
+
+        var videoContentModel = mapper.Map<VideoContentModel>(videoContentWithRelations);
+
+        return videoContentModel;
+    }
+}

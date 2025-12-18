@@ -13,9 +13,11 @@ public interface IRepository<T> where T : class, IBaseEntity
     Task<T?> GetByIdAsync(int id);
     T? GetById(Guid id);
     Task<T?> GetByIdAsync(Guid id);
+
+ 
+
     T Save(T entity);
     Task<T> SaveAsync(T entity);
     void Delete(T entity);
     Task DeleteAsync(T entity);
-
 }

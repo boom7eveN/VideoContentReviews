@@ -24,9 +24,11 @@ public abstract class MapperConfigurator
             config.AddProfile<ImageServiceProfile>();
             config.AddProfile<ImageBLProfile>();
             //genre
-            //image
             config.AddProfile<GenreServiceProfile>();
             config.AddProfile<GenreBLProfile>();
+            //videocontent
+            config.AddProfile<VideoContentBLProfile>();
+            config.AddProfile<VideoContentServiceProfile>();
         });
     }
 }

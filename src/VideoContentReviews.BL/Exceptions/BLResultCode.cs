@@ -42,4 +42,11 @@ public enum BLResultCode
     
     [Description("Genre already exists.")]
     GenreAlreadyExists = 013,
+    
+    [Description("VideoContent already exists.")]
+    VideoContentAlreadyExists = 014,
+    [Description("Image not found.")]
+    ImageNotFound = 015,
+    [Description("Genre not found.")]
+    GenreNotFound = 016,
 }
