@@ -2,9 +2,9 @@
 using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VideoContentReviews.BL.VideoContent.Entities;
-using VideoContentReviews.BL.VideoContent.Managers;
-using VideoContentReviews.BL.VideoContent.Providers;
+using VideoContentReviews.BL.Features.VideoContent.DTOs;
+using VideoContentReviews.BL.Features.VideoContent.Managers;
+using VideoContentReviews.BL.Features.VideoContent.Providers;
 using VideoContentReviews.Service.Controllers.VideoContent.Requests;
 using VideoContentReviews.Service.Controllers.VideoContent.Responses;
 

@@ -1,4 +1,4 @@
-﻿using VideoContentReviews.BL.Mappers;
+﻿using VideoContentReviews.BL.Common.Mappers;
 using VideoContentReviews.Service.Mapper;
 
 namespace VideoContentReviews.Service.IoC;

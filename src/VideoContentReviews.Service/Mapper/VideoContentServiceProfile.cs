@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using VideoContentReviews.BL.TypesOfContent.Entities;
-using VideoContentReviews.BL.VideoContent.Entities;
+using VideoContentReviews.BL.Features.VideoContent.DTOs;
 using VideoContentReviews.Service.Controllers.TypeOfContent.DTOs.Requests;
 using VideoContentReviews.Service.Controllers.TypeOfContent.DTOs.Responses;
 using VideoContentReviews.Service.Controllers.VideoContent.Requests;

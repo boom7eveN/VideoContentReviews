@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using VideoContentReviews.BL.Auth;
-using VideoContentReviews.BL.Auth.Entities;
+using VideoContentReviews.BL.Features.Auth;
+using VideoContentReviews.BL.Features.Auth.Entities;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Entities.Primitives;
 using VideoContentReviews.Service.Settings;
