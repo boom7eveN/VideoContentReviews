@@ -6,12 +6,15 @@ using Microsoft.IdentityModel.Tokens;
 using VideoContentReviews.DataAccess.Context;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.Service.Settings;
+using Duende.IdentityServer;
+using System.Security.Claims;
+using VideoContentReviews.Service.Identity;
 
 namespace VideoContentReviews.Service.IoC;
 
 public class AuthorizationConfigurator
 {
-     public static void ConfigureServices(IServiceCollection services, VideoContentReviewsSettings settings)
+    public static void ConfigureServices(IServiceCollection services, VideoContentReviewsSettings settings)
     {
         IdentityModelEventSource.ShowPII = true;
         services.AddIdentity<UserEntity, UserRoleEntity>(options =>
@@ -19,13 +22,23 @@ public class AuthorizationConfigurator
                 options.Password.RequireDigit = true;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
+
+                options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
+                options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Name;
+                options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
             })
             .AddEntityFrameworkStores<VideoContentReviewsDbContext>()
             .AddSignInManager<SignInManager<UserEntity>>()
             .AddDefaultTokenProviders()
             .AddRoles<UserRoleEntity>();
-        
+
         services.AddIdentityServer()
+            .AddInMemoryIdentityResources(new[]
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+                new IdentityResource("roles", new[] { "role" })
+            })
             .AddInMemoryApiScopes([new ApiScope("api")])
             .AddInMemoryClients(
             [
@@ -35,23 +48,40 @@ public class AuthorizationConfigurator
                     ClientId = settings.ClientId,
                     Enabled = true,
                     AllowOfflineAccess = true,
-                    AllowedGrantTypes = [
+                    AllowedGrantTypes =
+                    [
                         GrantType.ClientCredentials,
                         GrantType.ResourceOwnerPassword
                     ],
                     ClientSecrets = [new Secret(settings.ClientSecret.Sha256())],
-                    AllowedScopes = ["api"]
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "roles",
+                        "api"
+                    },
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AlwaysSendClientClaims = true
                 },
                 new Client
                 {
                     ClientId = "swagger",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets = [new Secret("swagger".Sha256())],
-                    AllowedScopes = ["api"]
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "roles",
+                        "api"
+                    },
+                    AlwaysIncludeUserClaimsInIdToken = true
                 },
             ])
-            .AddAspNetIdentity<UserEntity>();
-        
+            .AddAspNetIdentity<UserEntity>()
+            .AddProfileService<CustomProfileService>();
+
         services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,11 +99,12 @@ public class AuthorizationConfigurator
                 ValidateAudience = false,
                 RequireExpirationTime = true,
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                NameClaimType = ClaimTypes.Name,
+                RoleClaimType = ClaimTypes.Role
             };
             options.Audience = "api";
         });
-        services.AddAuthorization();
     }
 
     public static void ConfigureApplication(IApplicationBuilder app)

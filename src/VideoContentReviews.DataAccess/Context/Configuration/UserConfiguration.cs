@@ -8,11 +8,9 @@ public static class UserConfiguration
     public static void ConfigureUser(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasKey(u => u.Id);
-        
+
         modelBuilder.Entity<UserEntity>().HasIndex(u => u.ExternalId).IsUnique();
-        
+
         modelBuilder.Entity<UserEntity>().HasIndex(u => u.Email).IsUnique();
-        
-        
     }
 }

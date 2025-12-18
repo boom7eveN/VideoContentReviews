@@ -13,13 +13,13 @@ public static class VideoContentConfiguration
         modelBuilder.Entity<VideoContentEntity>().HasOne(vc => vc.TypeOfContentEntity)
             .WithMany(tc => tc.VideoContents)
             .HasForeignKey(vc => vc.TypeOfContentId);
-        
+
         modelBuilder.Entity<VideoContentEntity>().HasOne(i => i.ImageEntity)
-            .WithMany(i=>i.VideoContents)
+            .WithMany(i => i.VideoContents)
             .HasForeignKey(vc => vc.ImageId);
-        
+
         modelBuilder.Entity<VideoContentEntity>().HasOne(vc => vc.DirectorEntity)
-            .WithMany(d=> d.VideoContents)
+            .WithMany(d => d.VideoContents)
             .HasForeignKey(vc => vc.DirectorId);
     }
 }

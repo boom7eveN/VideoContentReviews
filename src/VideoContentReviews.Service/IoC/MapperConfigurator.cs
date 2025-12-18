@@ -1,4 +1,4 @@
-﻿using VideoContentReviews.BL.Mapper;
+﻿using VideoContentReviews.BL.Mappers;
 using VideoContentReviews.Service.Mapper;
 
 namespace VideoContentReviews.Service.IoC;
@@ -14,6 +14,21 @@ public abstract class MapperConfigurator
             config.AddProfile<UserBLProfile>();
             // auth
             config.AddProfile<AuthBLProfile>();
+            //directors
+            config.AddProfile<DirectorServiceProfile>();
+            config.AddProfile<DirectorBLProfile>();
+            //content
+            config.AddProfile<TypeOfContentBLProfile>();
+            config.AddProfile<TypeOfContentServiceProfile>();
+            //image
+            config.AddProfile<ImageServiceProfile>();
+            config.AddProfile<ImageBLProfile>();
+            //genre
+            config.AddProfile<GenreServiceProfile>();
+            config.AddProfile<GenreBLProfile>();
+            //videocontent
+            config.AddProfile<VideoContentBLProfile>();
+            config.AddProfile<VideoContentServiceProfile>();
         });
     }
 }

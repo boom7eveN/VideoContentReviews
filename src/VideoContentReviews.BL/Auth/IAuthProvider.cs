@@ -1,5 +1,5 @@
 ﻿using VideoContentReviews.BL.Auth.Entities;
-using VideoContentReviews.BL.User.Entities;
+using VideoContentReviews.BL.Users.Entities;
 
 namespace VideoContentReviews.BL.Auth;
 

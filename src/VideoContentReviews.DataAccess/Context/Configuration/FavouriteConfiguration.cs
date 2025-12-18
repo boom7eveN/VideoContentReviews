@@ -1,17 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VideoContentReviews.DataAccess.Entities;
 
-namespace VideoContentReviews.DataAccess.Context.Configuration; 
+namespace VideoContentReviews.DataAccess.Context.Configuration;
+
 public static class FavouriteConfiguration
 {
     public static void ConfigureFavourite(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<FavouriteEntity>().HasKey(f => f.Id);
-        
+
         modelBuilder.Entity<FavouriteEntity>()
             .HasIndex(f => f.ExternalId)
             .IsUnique();
-        
+
         modelBuilder.Entity<FavouriteEntity>().HasOne(f => f.UserEntity)
             .WithMany(u => u.Favourites)
             .HasForeignKey(f => f.UserId);

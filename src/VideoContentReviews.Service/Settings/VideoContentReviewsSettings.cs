@@ -8,4 +8,5 @@ public class VideoContentReviewsSettings
     public string ClientSecret { get; set; }
     public string MasterAdminEmail { get; set; }
     public string MasterAdminPassword { get; set; }
+    public string MasterUserName { get; set; }
 }
