@@ -15,7 +15,7 @@ public class ImageController(IImageManager service, IMapper mapper) : Controller
     [HttpPost]
     [Route("create")]
     [Authorize(Roles = "Moderator")]
-    public async Task<IActionResult> CreateImage([FromQuery] CreateImageRequest request)
+    public async Task<IActionResult> CreateImage([FromBody] CreateImageRequest request)
     {
         var createdModel = mapper.Map<CreateImageModel>(request);
         var imageModel = await service.CreateImageAsync(createdModel);

@@ -14,7 +14,7 @@ public class GenresController(IGenreManager service, IMapper mapper) : Controlle
     [HttpPost]
     [Route("create")]
     [Authorize(Roles = "Moderator")]
-    public async Task<IActionResult> CreateGenre([FromQuery] CreateGenreRequest request)
+    public async Task<IActionResult> CreateGenre([FromBody] CreateGenreRequest request)
     {
         var createdModel = mapper.Map<CreateGenreModel>(request);
         var genreModel = await service.CreateGenreAsync(createdModel);

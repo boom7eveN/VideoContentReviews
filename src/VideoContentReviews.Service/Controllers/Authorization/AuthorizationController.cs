@@ -14,7 +14,7 @@ public class AuthorizationController(IAuthProvider _authorizationProvider, IMapp
 {
     [HttpPost]
     [Route("register")]
-    public async Task<IActionResult> RegisterUser([FromQuery] RegisterUserRequest request)
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserRequest request)
     {
         var registerModel = _mapper.Map<RegisterUserModel>(request);
         var userModel = await _authorizationProvider.RegisterUserAsync(registerModel);
@@ -23,7 +23,7 @@ public class AuthorizationController(IAuthProvider _authorizationProvider, IMapp
 
     [HttpGet]
     [Route("login")]
-    public async Task<IActionResult> LoginUser([FromQuery] AuthorizeUserRequest request)
+    public async Task<IActionResult> LoginUser([FromBody] AuthorizeUserRequest request)
     {
         var authorizeModel = _mapper.Map<AuthorizeUserModel>(request);
         var tokens = await _authorizationProvider.AuthorizeUserAsync(authorizeModel);
@@ -32,7 +32,7 @@ public class AuthorizationController(IAuthProvider _authorizationProvider, IMapp
 
     [HttpPost]
     [Route("refresh")]
-    public async Task<IActionResult> RefreshToken([FromQuery] RefreshTokenRequest request)
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
         var refreshToken = await _authorizationProvider.RefreshTokenAsync(request.RefreshToken);
         return Ok(refreshToken);

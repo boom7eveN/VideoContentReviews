@@ -20,7 +20,7 @@ public class TypeOfContentController(ITypeOfContentManager service, IMapper mapp
     [HttpPost]
     [Route("create")]
     [Authorize(Roles = "Moderator")]
-    public async Task<IActionResult> CreateDirector([FromQuery] CreateTypeOfContentRequest request)
+    public async Task<IActionResult> CreateDirector([FromBody] CreateTypeOfContentRequest request)
     {
         var createdModel = mapper.Map<CreateTypeOfContentModel>(request);
         var contentModel = await service.CreateTypeOfContentAsync(createdModel);
