@@ -128,12 +128,12 @@ public class VideoContentManager(
             throw new BusinessLogicException(BLResultCode.ValidationError,
                 string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage)));
         }
-        
+
 
         var entity = await videoContentRepository.GetByIdAsync(id);
         if (entity == null)
             throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
-        
+
         if (!model.Description.IsNullOrEmpty())
             entity.Description = model.Description;
 
@@ -144,8 +144,8 @@ public class VideoContentManager(
             entity.YearOfRelease = model.YearOfRelease.Value;
 
         entity.ModificationTime = DateTime.UtcNow;
-        
-        
+
+
         entity = await videoContentRepository.SaveAsync(entity);
 
         await using var context = await contextFactory.CreateDbContextAsync();

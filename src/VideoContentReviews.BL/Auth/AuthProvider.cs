@@ -26,7 +26,7 @@ public class AuthProvider(
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
-            throw new BusinessLogicException(BLResultCode.ValidationError, 
+            throw new BusinessLogicException(BLResultCode.ValidationError,
                 string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
@@ -35,13 +35,13 @@ public class AuthProvider(
         {
             throw new BusinessLogicException(BLResultCode.UserNotFound);
         }
-        
+
         var verificationResult = await signInManager.CheckPasswordSignInAsync(user, model.Password, false);
         if (!verificationResult.Succeeded)
         {
             throw new BusinessLogicException(BLResultCode.EmailOrPasswordIsIncorrect);
         }
-        
+
         var client = httpClientFactory.CreateClient();
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(identityServerUri);
         if (discoveryDocument.IsError)
@@ -64,7 +64,7 @@ public class AuthProvider(
         {
             throw new BusinessLogicException(BLResultCode.IdentityServerError);
         }
-        
+
         return new TokensResponse
         {
             AccessToken = tokenResponse.AccessToken,
@@ -78,7 +78,7 @@ public class AuthProvider(
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
-            throw new BusinessLogicException(BLResultCode.ValidationError, 
+            throw new BusinessLogicException(BLResultCode.ValidationError,
                 string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
@@ -87,7 +87,7 @@ public class AuthProvider(
         {
             throw new BusinessLogicException(BLResultCode.UserAlreadyExists);
         }
-        
+
         user = mapper.Map<UserEntity>(model);
         user.ExternalId = Guid.NewGuid();
         var time = DateTime.UtcNow;
@@ -95,14 +95,15 @@ public class AuthProvider(
         user.ModificationTime = time;
         user.UserName = model.UserName;
         user.Role = model.Role;
-        
+
         var createResult = await userManager.CreateAsync(user, model.Password);
         if (!createResult.Succeeded)
         {
             throw new BusinessLogicException(BLResultCode.UserCreationFailure,
                 string.Join(Environment.NewLine, createResult.Errors.Select(e => e.Description)));
         }
-        
+
+
         return mapper.Map<UserModel>(user);
     }
 
@@ -127,7 +128,7 @@ public class AuthProvider(
             ClientSecret = clientSecret,
             RefreshToken = refreshToken
         });
-        
+
         if (tokenResponse.IsError)
         {
             throw new BusinessLogicException(BLResultCode.IdentityServerError);
@@ -136,6 +137,7 @@ public class AuthProvider(
         return new TokensResponse
         {
             AccessToken = tokenResponse.AccessToken,
+
             RefreshToken = tokenResponse.RefreshToken
         };
     }

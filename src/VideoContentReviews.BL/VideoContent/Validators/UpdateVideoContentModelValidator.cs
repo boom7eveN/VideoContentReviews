@@ -12,7 +12,7 @@ public class UpdateVideoContentModelValidator : AbstractValidator<UpdateVideoCon
             RuleFor(x => x.Name)
                 .Length(2, 200).WithMessage("Name must be between 2 and 200 characters");
         });
-        
+
         When(x => x.YearOfRelease.HasValue, () =>
         {
             RuleFor(x => x.YearOfRelease)

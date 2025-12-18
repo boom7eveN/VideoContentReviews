@@ -40,7 +40,7 @@ public class VideoContentProvider(
             .FirstOrDefaultAsync(vc => vc.ExternalId == externalId);
 
         if (videoContent == null)
-           throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
+            throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
 
         return mapper.Map<VideoContentModel>(videoContent);
     }

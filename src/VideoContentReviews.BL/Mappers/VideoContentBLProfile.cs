@@ -51,7 +51,5 @@ public class VideoContentBLProfile : Profile
             .ForMember(dest => dest.ExternalId, opt => opt.Ignore())
             .ForMember(dest => dest.CreationTime, opt => opt.Ignore())
             .ForMember(dest => dest.ModificationTime, opt => opt.Ignore());
-        
-        
     }
 }
