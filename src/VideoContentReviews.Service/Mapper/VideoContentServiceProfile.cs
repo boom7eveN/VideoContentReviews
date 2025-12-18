@@ -25,6 +25,11 @@ public class VideoContentServiceProfile : Profile
             .ForMember(dest => dest.GenreExternalIds,
                 opt => opt.MapFrom(src => src.GenreIds));
 
+        CreateMap<UpdateVideoContentRequest, UpdateVideoContentModel>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.YearOfRelease, opt => opt.MapFrom(src => src.YearOfRelease))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
+
         CreateMap<VideoContentModel, VideoContentResponse>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ExternalId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))

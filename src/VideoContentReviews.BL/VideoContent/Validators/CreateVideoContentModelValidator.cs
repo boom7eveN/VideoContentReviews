@@ -39,6 +39,6 @@ public class CreateVideoContentModelValidator : AbstractValidator<CreateVideoCon
             .WithMessage("Cannot have more than 10 genres")
             .Must(ids => ids == null || ids.All(id => id != Guid.Empty))
             .WithMessage("Genre list contains invalid IDs")
-            .When(x => x.GenreExternalIds != null);
+            .When(x => true);
     }
 }

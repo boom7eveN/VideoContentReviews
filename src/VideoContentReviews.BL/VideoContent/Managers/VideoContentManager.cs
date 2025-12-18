@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Duende.IdentityServer.Extensions;
 using Microsoft.EntityFrameworkCore;
 using VideoContentReviews.BL.Exceptions;
 using VideoContentReviews.BL.Genres.Entities;
@@ -108,5 +109,60 @@ public class VideoContentManager(
         var videoContentModel = mapper.Map<VideoContentModel>(videoContentWithRelations);
 
         return videoContentModel;
+    }
+
+    public async Task DeleteVideoContentAsync(Guid id)
+    {
+        var videoEntity = await videoContentRepository.GetByIdAsync(id);
+        if (videoEntity == null)
+            throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
+        await videoContentRepository.DeleteAsync(videoEntity);
+    }
+
+    public async Task<VideoContentModel> UpdateVideoContentAsync(Guid id, UpdateVideoContentModel model)
+    {
+        var validator = new UpdateVideoContentModelValidator();
+        var result = await validator.ValidateAsync(model);
+        if (!result.IsValid)
+        {
+            throw new BusinessLogicException(BLResultCode.ValidationError,
+                string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage)));
+        }
+        
+
+        var entity = await videoContentRepository.GetByIdAsync(id);
+        if (entity == null)
+            throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
+        
+        if (!model.Description.IsNullOrEmpty())
+            entity.Description = model.Description;
+
+        if (!model.Name.IsNullOrEmpty())
+            entity.Name = model.Name;
+
+        if (model.YearOfRelease.HasValue)
+            entity.YearOfRelease = model.YearOfRelease.Value;
+
+        entity.ModificationTime = DateTime.UtcNow;
+        
+        
+        entity = await videoContentRepository.SaveAsync(entity);
+
+        await using var context = await contextFactory.CreateDbContextAsync();
+
+        var videoContentWithRelations = await context.VideoContents
+            .Include(vc => vc.TypeOfContentEntity)
+            .Include(vc => vc.DirectorEntity)
+            .Include(vc => vc.ImageEntity)
+            .Include(vc => vc.VideoContentsGenres)
+            .ThenInclude(vcg => vcg.GenreEntity)
+            .FirstOrDefaultAsync(vc => vc.Id == entity.Id);
+
+        if (videoContentWithRelations == null)
+        {
+            throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
+        }
+
+        return mapper.Map<VideoContentModel>(videoContentWithRelations);
     }
 }

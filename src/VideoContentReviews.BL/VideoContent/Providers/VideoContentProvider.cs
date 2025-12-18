@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using VideoContentReviews.BL.Exceptions;
 using VideoContentReviews.BL.VideoContent.Entities;
 using VideoContentReviews.DataAccess.Context;
 using VideoContentReviews.DataAccess.Entities;
@@ -39,7 +40,7 @@ public class VideoContentProvider(
             .FirstOrDefaultAsync(vc => vc.ExternalId == externalId);
 
         if (videoContent == null)
-            return null;
+           throw new BusinessLogicException(BLResultCode.VideoContentNotFound);
 
         return mapper.Map<VideoContentModel>(videoContent);
     }
