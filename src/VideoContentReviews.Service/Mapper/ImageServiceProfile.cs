@@ -19,13 +19,14 @@ public class ImageServiceProfile : Profile
             .ForMember(dest => dest.FilenameWithExtension,
                 opt => opt.MapFrom(src => $"{src.FileName}.{src.FileExtension.ToString().ToLower()}"));
     }
-    
+
     internal static ImageFormat ParseImageFormat(string extension)
     {
         if (Enum.TryParse<ImageFormat>(extension, true, out var result))
         {
             return result;
         }
+
         throw new ServiceException(ServiceErrorCode.InvalidImageFormat);
     }
 }

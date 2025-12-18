@@ -28,7 +28,7 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
 
     public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter)
     {
-        var context =  await _contextFactory.CreateDbContextAsync();
+        var context = await _contextFactory.CreateDbContextAsync();
         return context.Set<T>().Where(filter);
     }
 
@@ -38,7 +38,7 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         return context.Set<T>().FirstOrDefault(x => x.Id == id);
     }
 
-   
+
     public async Task<T?> GetByIdAsync(int id)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
@@ -50,7 +50,7 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         using var context = _contextFactory.CreateDbContext();
         return context.Set<T>().FirstOrDefault(x => x.ExternalId == id);
     }
-    
+
     public async Task<T?> GetByIdAsync(Guid externalId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
@@ -82,23 +82,23 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
     public async Task<T> SaveAsync(T entity)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        
+
         var exists = await context.Set<T>().AnyAsync(x => x.Id == entity.Id);
-        
-        if (exists) 
+
+        if (exists)
         {
             entity.ModificationTime = DateTime.UtcNow;
             context.Set<T>().Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
         }
-        else 
+        else
         {
             entity.ExternalId = Guid.NewGuid();
             entity.CreationTime = DateTime.UtcNow;
             entity.ModificationTime = entity.CreationTime;
             await context.Set<T>().AddAsync(entity);
         }
-        
+
         await context.SaveChangesAsync();
         return entity;
     }
@@ -118,6 +118,4 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         context.Set<T>().Remove(entity);
         await context.SaveChangesAsync();
     }
-    
-   
 }

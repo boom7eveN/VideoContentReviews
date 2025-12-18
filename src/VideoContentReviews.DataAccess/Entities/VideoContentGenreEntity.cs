@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VideoContentReviews.DataAccess.Entities;
-[Table("VideoContentGenres")] 
+
+[Table("VideoContentGenres")]
 public class VideoContentGenreEntity : BaseEntity
 {
     public int VideoContentId { get; set; }

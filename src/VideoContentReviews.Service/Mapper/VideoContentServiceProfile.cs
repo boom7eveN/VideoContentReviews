@@ -16,17 +16,17 @@ public class VideoContentServiceProfile : Profile
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.YearOfRelease, opt => opt.MapFrom(src => src.YearOfRelease))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-            .ForMember(dest => dest.TypeOfContentExternalId, 
+            .ForMember(dest => dest.TypeOfContentExternalId,
                 opt => opt.MapFrom(src => src.TypeOfContentId))
-            .ForMember(dest => dest.DirectorExternalId, 
+            .ForMember(dest => dest.DirectorExternalId,
                 opt => opt.MapFrom(src => src.DirectorId))
-            .ForMember(dest => dest.ImageExternalId, 
+            .ForMember(dest => dest.ImageExternalId,
                 opt => opt.MapFrom(src => src.ImageId))
-            .ForMember(dest => dest.GenreExternalIds, 
+            .ForMember(dest => dest.GenreExternalIds,
                 opt => opt.MapFrom(src => src.GenreIds));
 
         CreateMap<VideoContentModel, VideoContentResponse>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ExternalId)) 
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ExternalId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.YearOfRelease, opt => opt.MapFrom(src => src.YearOfRelease))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))

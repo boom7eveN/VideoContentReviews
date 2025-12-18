@@ -7,7 +7,10 @@ using VideoContentReviews.DataAccess.Repositories;
 
 namespace VideoContentReviews.BL.VideoContent.Providers;
 
-public class VideoContentProvider(IRepository<VideoContentEntity> videoContentRepository , IMapper mapper, IDbContextFactory<VideoContentReviewsDbContext> contextFactory) :  IVideoContentProvider
+public class VideoContentProvider(
+    IRepository<VideoContentEntity> videoContentRepository,
+    IMapper mapper,
+    IDbContextFactory<VideoContentReviewsDbContext> contextFactory) : IVideoContentProvider
 {
     public async Task<List<VideoContentModel>> GetAllAsync()
     {
@@ -19,14 +22,14 @@ public class VideoContentProvider(IRepository<VideoContentEntity> videoContentRe
             .Include(vc => vc.VideoContentsGenres)
             .ThenInclude(vcg => vcg.GenreEntity)
             .ToListAsync();
-        
+
         return mapper.Map<List<VideoContentModel>>(videoContents);
     }
-    
+
     public async Task<VideoContentModel?> GetByIdAsync(Guid externalId)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
-        
+
         var videoContent = await context.VideoContents
             .Include(vc => vc.TypeOfContentEntity)
             .Include(vc => vc.DirectorEntity)
@@ -34,10 +37,10 @@ public class VideoContentProvider(IRepository<VideoContentEntity> videoContentRe
             .Include(vc => vc.VideoContentsGenres)
             .ThenInclude(vcg => vcg.GenreEntity)
             .FirstOrDefaultAsync(vc => vc.ExternalId == externalId);
-        
+
         if (videoContent == null)
             return null;
-            
+
         return mapper.Map<VideoContentModel>(videoContent);
     }
 }

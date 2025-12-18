@@ -4,7 +4,8 @@ using VideoContentReviews.Service.Settings;
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)
-    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
+        optional: true)
     .Build();
 
 var settings = VideoContentReviewsSettingsReader.Read(configuration);
@@ -24,7 +25,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
-AuthorizationConfigurator.ConfigureApplication(app); 
+AuthorizationConfigurator.ConfigureApplication(app);
 SwaggerConfigurator.ConfigureApplication(app);
 DbContextConfigurator.ConfigureApplication(app);
 SerilogConfigurator.ConfigureApplication(app);

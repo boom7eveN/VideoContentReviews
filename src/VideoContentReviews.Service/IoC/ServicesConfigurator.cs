@@ -19,7 +19,6 @@ public static class ServicesConfigurator
 {
     public static void ConfigureServices(IServiceCollection services, VideoContentReviewsSettings settings)
     {
-        
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         //videocontent
         services.AddScoped<IVideoContentManager>(provider =>
@@ -33,7 +32,7 @@ public static class ServicesConfigurator
                 provider.GetRequiredService<IDbContextFactory<VideoContentReviewsDbContext>>(),
                 provider.GetRequiredService<IMapper>()
             ));
-        
+
         services.AddScoped<IVideoContentProvider>(provider =>
             new VideoContentProvider(
                 provider.GetRequiredService<IRepository<VideoContentEntity>>(),
@@ -49,7 +48,7 @@ public static class ServicesConfigurator
                 settings.IdentityServerUri,
                 settings.ClientId,
                 settings.ClientSecret));
-        
+
         //directors
         services.AddScoped<IDirectorManager>(provider =>
         {

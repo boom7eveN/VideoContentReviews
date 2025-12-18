@@ -89,9 +89,9 @@ public class VideoContentManager(
 
             await videoContentGenreRepository.SaveAsync(videoContentGenre);
         }
-        
+
         await using var context = await contextFactory.CreateDbContextAsync();
-        
+
         var videoContentWithRelations = await context.VideoContents
             .Include(vc => vc.TypeOfContentEntity)
             .Include(vc => vc.DirectorEntity)

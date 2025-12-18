@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VideoContentReviews.DataAccess.Entities;
-[Table("TypesOfContent")] 
+
+[Table("TypesOfContent")]
 public class TypeOfContentEntity : BaseEntity
 {
     public String Title { get; set; }

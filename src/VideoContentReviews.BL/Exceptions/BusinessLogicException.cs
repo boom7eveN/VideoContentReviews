@@ -18,18 +18,18 @@ public class BusinessLogicException : System.Exception
     {
         BlResultCode = blResultCode;
     }
-    
+
     public BusinessLogicException(BLResultCode blResultCode, string message) : base($"{blResultCode}: {message}")
     {
         BlResultCode = blResultCode;
     }
-    
-    public BusinessLogicException(BLResultCode blResultCode, string message, bool useDescription = false) 
+
+    public BusinessLogicException(BLResultCode blResultCode, string message, bool useDescription = false)
         : base(useDescription ? GetEnumDescription(blResultCode) + ": " + message : $"{blResultCode}: {message}")
     {
         BlResultCode = blResultCode;
     }
-    
+
     private static string GetEnumDescription(BLResultCode value)
     {
         var field = value.GetType().GetField(value.ToString());

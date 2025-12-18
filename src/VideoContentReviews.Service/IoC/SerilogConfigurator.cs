@@ -20,6 +20,5 @@ public static class SerilogConfigurator
     public static void ConfigureApplication(IApplicationBuilder app)
     {
         app.UseSerilogRequestLogging();
-
     }
 }

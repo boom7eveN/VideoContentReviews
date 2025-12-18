@@ -13,7 +13,7 @@ public class CustomProfileService(UserManager<UserEntity> userManager) : IProfil
     {
         var sub = context.Subject.GetSubjectId();
         var user = await userManager.FindByIdAsync(sub);
-        
+
         if (user == null) return;
 
         var claims = new List<Claim>

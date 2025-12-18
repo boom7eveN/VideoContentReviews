@@ -12,7 +12,8 @@ namespace VideoContentReviews.Service.Controllers.VideoContent;
 
 [ApiController]
 [Route("[controller]")]
-public class VideoContentController(IVideoContentManager service, IVideoContentProvider provider, IMapper mapper) : ControllerBase
+public class VideoContentController(IVideoContentManager service, IVideoContentProvider provider, IMapper mapper)
+    : ControllerBase
 {
     [HttpPost]
     [Route("create")]
@@ -23,7 +24,7 @@ public class VideoContentController(IVideoContentManager service, IVideoContentP
         var videoModel = await service.CreateVideoContentAsync(createdModel);
         return Ok(mapper.Map<VideoContentResponse>(videoModel));
     }
-    
+
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> GetAllVideoContent()

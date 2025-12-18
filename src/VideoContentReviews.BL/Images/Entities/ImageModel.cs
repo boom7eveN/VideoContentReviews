@@ -8,7 +8,7 @@ public class ImageModel
     public Guid ExternalId { get; set; }
     public string FileName { get; set; }
     public ImageFormat FileExtension { get; set; }
-    public string FullPath { get; set; } 
+    public string FullPath { get; set; }
     public DateTime CreationTime { get; set; }
     public DateTime ModificationTime { get; set; }
 }

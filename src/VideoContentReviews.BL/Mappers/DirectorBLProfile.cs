@@ -17,7 +17,7 @@ public class DirectorBLProfile : Profile
                 opt => opt.MapFrom(src => src.LastName))
             .ForMember(dest => dest.Patronymic,
                 opt => opt.MapFrom(src => src.Patronymic));
-        
+
         CreateMap<CreateDirectorModel, DirectorEntity>()
             .ForMember(dest => dest.FirstName,
                 opt => opt.MapFrom(src => src.FirstName))

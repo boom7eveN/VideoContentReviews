@@ -15,7 +15,7 @@ public class UserBLProfile : Profile
             .ForMember(dest => dest.ModificationTime, opt => opt.MapFrom(src => src.ModificationTime))
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-            .ForMember(dest => dest.Role, opt => opt.MapFrom(src => 
-                src.Role.ToString())); 
+            .ForMember(dest => dest.Role, opt => opt.MapFrom(src =>
+                src.Role.ToString()));
     }
 }

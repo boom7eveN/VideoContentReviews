@@ -15,7 +15,7 @@ public static class SwaggerConfigurator
                 Version = "v1",
                 Description = "API для управления видео контентом и отзывами"
             });
-            
+
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Name = "Authorization",
@@ -25,7 +25,7 @@ public static class SwaggerConfigurator
                 In = ParameterLocation.Header,
                 Description = "Введите JWT токен(без кавычек):"
             });
-            
+
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -40,12 +40,9 @@ public static class SwaggerConfigurator
                     Array.Empty<string>()
                 }
             });
-
-           
-            
         });
     }
-    
+
     public static void ConfigureApplication(IApplicationBuilder app)
     {
         app.UseSwagger();

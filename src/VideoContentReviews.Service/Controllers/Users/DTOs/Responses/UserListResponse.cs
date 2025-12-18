@@ -4,5 +4,5 @@ namespace VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
 public class UsersListResponse
 {
-    public List<UserModel> Users { get; set; } 
+    public List<UserModel> Users { get; set; }
 }

@@ -18,7 +18,7 @@ public class GenreManager(IRepository<GenreEntity> genreRepository, IMapper mapp
         //     throw new BusinessLogicException(ResultCode.ValidationError,
         //         string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)));
         // }
-        
+
         var existing = await genreRepository.GetAllAsync(g => g.Title == model.Title);
         if (existing.Any())
         {

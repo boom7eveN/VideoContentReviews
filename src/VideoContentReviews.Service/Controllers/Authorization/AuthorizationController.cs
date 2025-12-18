@@ -7,7 +7,6 @@ using VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
 namespace VideoContentReviews.Service.Controllers.Authorization;
 
-
 [ApiController]
 [Route("[controller]")]
 public class AuthorizationController(IAuthProvider _authorizationProvider, IMapper _mapper)
@@ -30,7 +29,7 @@ public class AuthorizationController(IAuthProvider _authorizationProvider, IMapp
         var tokens = await _authorizationProvider.AuthorizeUserAsync(authorizeModel);
         return Ok(tokens);
     }
-    
+
     [HttpPost]
     [Route("refresh")]
     public async Task<IActionResult> RefreshToken([FromQuery] RefreshTokenRequest request)

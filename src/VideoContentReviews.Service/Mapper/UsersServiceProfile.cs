@@ -14,7 +14,7 @@ public class UsersServiceProfile : Profile
             .ForMember(dest => dest.Role, opt => opt.Ignore());
         CreateMap<AuthorizeUserRequest, AuthorizeUserModel>();
         CreateMap<UserModel, UserResponse>()
-            .ForMember(dest => dest.ExternalId, opt => 
+            .ForMember(dest => dest.ExternalId, opt =>
                 opt.MapFrom(src => src.ExternalId));
     }
 }

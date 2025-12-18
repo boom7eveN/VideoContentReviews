@@ -10,20 +10,20 @@ public class DirectorServiceProfile : Profile
     public DirectorServiceProfile()
     {
         CreateMap<CreateDirectorRequest, CreateDirectorModel>()
-            .ForMember(dest => dest.FirstName, 
+            .ForMember(dest => dest.FirstName,
                 opt => opt.MapFrom(src => src.FirstName))
-            .ForMember(dest => dest.LastName, 
+            .ForMember(dest => dest.LastName,
                 opt => opt.MapFrom(src => src.LastName))
-            .ForMember(dest => dest.Patronymic, 
+            .ForMember(dest => dest.Patronymic,
                 opt => opt.MapFrom(src => src.Patronymic));
-        
+
         CreateMap<DirectorModel, DirectorResponse>()
             .ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.ExternalId))
-            .ForMember(dest => dest.FirstName, 
+            .ForMember(dest => dest.FirstName,
                 opt => opt.MapFrom(src => src.FirstName))
-            .ForMember(dest => dest.LastName, 
+            .ForMember(dest => dest.LastName,
                 opt => opt.MapFrom(src => src.LastName))
-            .ForMember(dest => dest.Patronymic, 
+            .ForMember(dest => dest.Patronymic,
                 opt => opt.MapFrom(src => src.Patronymic));
     }
 }

@@ -7,7 +7,7 @@ public class CreateVideoContentRequest
     public int YearOfRelease { get; set; }
 
     public string Description { get; set; }
-    
+
 
     public Guid TypeOfContentId { get; set; }
 

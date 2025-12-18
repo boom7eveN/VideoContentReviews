@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VideoContentReviews.DataAccess.Entities;
-[Table("Directors")] 
+
+[Table("Directors")]
 public class DirectorEntity : BaseEntity
 {
     public String FirstName { get; set; }

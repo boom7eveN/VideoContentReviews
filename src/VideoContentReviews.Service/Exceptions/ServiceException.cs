@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Net;
 
 namespace VideoContentReviews.Service.Exceptions;
@@ -21,32 +20,32 @@ public class ServiceException : Exception
     {
         ErrorCode = errorCode;
     }
-    
-    public ServiceException(ServiceErrorCode errorCode, string message) 
+
+    public ServiceException(ServiceErrorCode errorCode, string message)
         : base($"{errorCode}: {message}")
     {
         ErrorCode = errorCode;
     }
-    
-    public ServiceException(HttpStatusCode httpStatusCode, string message) 
+
+    public ServiceException(HttpStatusCode httpStatusCode, string message)
         : base(message)
     {
         HttpStatusCode = httpStatusCode;
     }
-    
-    public ServiceException(ServiceErrorCode errorCode, HttpStatusCode httpStatusCode, string message) 
+
+    public ServiceException(ServiceErrorCode errorCode, HttpStatusCode httpStatusCode, string message)
         : base($"{errorCode}: {message}")
     {
         ErrorCode = errorCode;
         HttpStatusCode = httpStatusCode;
     }
-    
-    public ServiceException(ServiceErrorCode errorCode, string message, bool useDescription = false) 
+
+    public ServiceException(ServiceErrorCode errorCode, string message, bool useDescription = false)
         : base(useDescription ? GetEnumDescription(errorCode) + ": " + message : $"{errorCode}: {message}")
     {
         ErrorCode = errorCode;
     }
-    
+
     private static string GetEnumDescription(ServiceErrorCode value)
     {
         var field = value.GetType().GetField(value.ToString());

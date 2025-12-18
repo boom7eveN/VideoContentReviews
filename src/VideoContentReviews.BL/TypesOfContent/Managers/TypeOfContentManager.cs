@@ -19,14 +19,13 @@ public class TypeOfContentManager : ITypeOfContentManager
     }
 
 
-
     public async Task<TypeOfContentModel> CreateTypeOfContentAsync(CreateTypeOfContentModel model)
     {
         var validator = new CreateTypeOfContentModelValidator();
         var validationResult = await validator.ValidateAsync(model);
         if (!validationResult.IsValid)
         {
-            throw new BusinessLogicException(BLResultCode.ValidationError, 
+            throw new BusinessLogicException(BLResultCode.ValidationError,
                 string.Join(Environment.NewLine, validationResult.Errors.Select(e => e.ErrorMessage)));
         }
 
@@ -36,7 +35,7 @@ public class TypeOfContentManager : ITypeOfContentManager
         {
             throw new BusinessLogicException(BLResultCode.TypeOfContentAlreadyExists);
         }
-        
+
         var entity = _mapper.Map<TypeOfContentEntity>(model);
         entity = await _contentRepository.SaveAsync(entity);
         return _mapper.Map<TypeOfContentModel>(entity);

@@ -33,7 +33,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
     }
 
     private static async Task HandleBusinessLogicExceptionAsync(
-        HttpContext context, 
+        HttpContext context,
         BusinessLogicException exception)
     {
         var statusCode = exception.BlResultCode switch
@@ -57,24 +57,24 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
     }
 
     private static async Task HandleServiceExceptionAsync(
-        HttpContext context, 
+        HttpContext context,
         ServiceException exception)
     {
-        var statusCode = exception.HttpStatusCode 
-            ?? (exception.ErrorCode.HasValue 
-                ? (HttpStatusCode)exception.ErrorCode.Value 
-                : HttpStatusCode.InternalServerError);
+        var statusCode = exception.HttpStatusCode
+                         ?? (exception.ErrorCode.HasValue
+                             ? (HttpStatusCode)exception.ErrorCode.Value
+                             : HttpStatusCode.InternalServerError);
 
         await WriteErrorResponseAsync(
-            context, 
-            statusCode, 
-            exception.ErrorCode?.ToString(), 
+            context,
+            statusCode,
+            exception.ErrorCode?.ToString(),
             exception.Message,
             (int?)exception.ErrorCode);
     }
 
     private async Task HandleGenericExceptionAsync(
-        HttpContext context, 
+        HttpContext context,
         Exception exception)
     {
         logger.LogError(exception, "Unhandled exception occurred");
@@ -83,8 +83,8 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         {
             StatusCode = (int)HttpStatusCode.InternalServerError,
             Message = "An internal server error occurred",
-            Details = context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment() 
-                ? exception.Message 
+            Details = context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment()
+                ? exception.Message
                 : null,
             StackTrace = context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment()
                 ? exception.StackTrace
