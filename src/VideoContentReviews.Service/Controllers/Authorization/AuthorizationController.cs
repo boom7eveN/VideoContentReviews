@@ -21,7 +21,7 @@ public class AuthorizationController(IAuthProvider _authorizationProvider, IMapp
         return Ok(_mapper.Map<UserResponse>(userModel));
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("login")]
     public async Task<IActionResult> LoginUser([FromBody] AuthorizeUserRequest request)
     {
