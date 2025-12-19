@@ -7,6 +7,7 @@ using VideoContentReviews.BL.Features.Images.Managers;
 using VideoContentReviews.BL.Features.TypesOfContent.Managers;
 using VideoContentReviews.BL.Features.VideoContent.Managers;
 using VideoContentReviews.BL.Features.VideoContent.Providers;
+using VideoContentReviews.BL.Features.VideoContent.ValidationServices;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Repositories;
 using VideoContentReviews.DataAccess.Repositories.VideoContentRepository;
@@ -21,14 +22,21 @@ public static class ServicesConfigurator
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IVideoContentRepository, VideoContentRepository>();
         
-        //videocontent
-        services.AddScoped<IVideoContentManager>(provider =>
-            new VideoContentManager(
+        //videocontent validation service
+        services.AddScoped<IVideoContentValidationService>(provider =>
+            new VideoContentValidationService(
                 provider.GetRequiredService<IVideoContentRepository>(),
                 provider.GetRequiredService<IRepository<TypeOfContentEntity>>(),
                 provider.GetRequiredService<IRepository<DirectorEntity>>(),
                 provider.GetRequiredService<IRepository<ImageEntity>>(),
-                provider.GetRequiredService<IRepository<GenreEntity>>(),
+                provider.GetRequiredService<IRepository<GenreEntity>>()
+            ));
+
+        //videocontent manager
+        services.AddScoped<IVideoContentManager>(provider =>
+            new VideoContentManager(
+                provider.GetRequiredService<IVideoContentRepository>(),
+                provider.GetRequiredService<IVideoContentValidationService>(),
                 provider.GetRequiredService<IRepository<VideoContentGenreEntity>>(),
                 provider.GetRequiredService<IMapper>()
             ));
@@ -38,6 +46,7 @@ public static class ServicesConfigurator
                 provider.GetRequiredService<IVideoContentRepository>(),
                 provider.GetRequiredService<IMapper>()
             ));
+        
         //auth
         services.AddScoped<IAuthProvider>(x =>
             new AuthProvider(x.GetRequiredService<SignInManager<UserEntity>>(),
@@ -55,6 +64,7 @@ public static class ServicesConfigurator
             var mapper = provider.GetRequiredService<IMapper>();
             return new DirectorManager(repository, mapper);
         });
+        
         //content
         services.AddScoped<ITypeOfContentManager>(provider =>
         {
@@ -62,6 +72,7 @@ public static class ServicesConfigurator
             var mapper = provider.GetRequiredService<IMapper>();
             return new TypeOfContentManager(repository, mapper);
         });
+        
         //images
         services.AddScoped<IImageManager>(provider =>
         {
@@ -69,6 +80,7 @@ public static class ServicesConfigurator
             var mapper = provider.GetRequiredService<IMapper>();
             return new ImageManager(repository, mapper);
         });
+        
         //genres
         services.AddScoped<IGenreManager>(provider =>
         {
