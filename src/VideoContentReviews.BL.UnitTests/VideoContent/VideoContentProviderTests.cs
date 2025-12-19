@@ -198,7 +198,7 @@ public class VideoContentProviderTests
     }
 
     [Test]
-    public async Task Get_All_Existing_Video_Content()
+    public async Task GetVideoContent_Success_ReturnsListVideoContent()
     {
         _videoContentRepositoryMock.Setup(x
             => x.GetAllWithRelationsAsync()).ReturnsAsync(_videoContent);
@@ -214,7 +214,7 @@ public class VideoContentProviderTests
     }
 
     [Test]
-    public async Task Get_All_Existing_Video_Content_When_Empty()
+    public async Task GetVideoContent_ContentIsEmpty_ReturnNullOrEmpty()
     {
         _videoContentRepositoryMock.Setup(x => x.GetAllWithRelationsAsync())
             .ReturnsAsync(new List<VideoContentEntity>());
@@ -226,7 +226,7 @@ public class VideoContentProviderTests
     }
 
     [Test]
-    public async Task Get_By_Id_When_Exists()
+    public async Task GetVideoContentById_Success_ReturnVideoContent()
     {
         var target = _videoContent[1];
         _videoContentRepositoryMock.Setup(x => x.GetByIdWithRelationsAsync(target.ExternalId))
@@ -248,7 +248,7 @@ public class VideoContentProviderTests
     }
 
     [Test]
-    public void Get_By_Id_When_Not_Exists()
+    public void GetVideoContentById_ContentNotFound_ThrowsException()
     {
         var targetGuid = Guid.Parse("bbbbbbbb-1234-1234-1234-999999900002");
         _videoContentRepositoryMock
