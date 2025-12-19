@@ -7,5 +7,6 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::33A2D516-6494-4F74-8B86-A9AD55093C2F::net9.0::VideoContentReviews.BL.UnitTests.VideoContent.VideoContentProviderTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::33A2D516-6494-4F74-8B86-A9AD55093C2F::net9.0::VideoContentReviews.BL.UnitTests.VideoContent.VideoContentManagerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::E53E4C14-533B-49A0-A18B-924BAE089C22::net9.0::VideoContentReviews.DataAccess.UnitTests.VideoContentRepositoryTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
