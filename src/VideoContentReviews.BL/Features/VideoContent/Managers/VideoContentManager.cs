@@ -1,23 +1,21 @@
 ﻿using AutoMapper;
 using Duende.IdentityServer.Extensions;
-using Microsoft.EntityFrameworkCore;
 using VideoContentReviews.BL.Common.Exceptions;
 using VideoContentReviews.BL.Features.VideoContent.DTOs;
 using VideoContentReviews.BL.Features.VideoContent.Validators;
-using VideoContentReviews.DataAccess.Context;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Repositories;
+using VideoContentReviews.DataAccess.Repositories.VideoContentRepository;
 
 namespace VideoContentReviews.BL.Features.VideoContent.Managers;
 
 public class VideoContentManager(
-    IRepository<VideoContentEntity> videoContentRepository,
+    IVideoContentRepository videoContentRepository,
     IRepository<TypeOfContentEntity> typeOfContentRepository,
     IRepository<DirectorEntity> directorRepository,
     IRepository<ImageEntity> imageRepository,
     IRepository<GenreEntity> genreRepository,
     IRepository<VideoContentGenreEntity> videoContentGenreRepository,
-    IDbContextFactory<VideoContentReviewsDbContext> contextFactory,
     IMapper mapper)
     : IVideoContentManager
 {
@@ -90,15 +88,7 @@ public class VideoContentManager(
             await videoContentGenreRepository.SaveAsync(videoContentGenre);
         }
 
-        await using var context = await contextFactory.CreateDbContextAsync();
-
-        var videoContentWithRelations = await context.VideoContents
-            .Include(vc => vc.TypeOfContentEntity)
-            .Include(vc => vc.DirectorEntity)
-            .Include(vc => vc.ImageEntity)
-            .Include(vc => vc.VideoContentsGenres)
-            .ThenInclude(vcg => vcg.GenreEntity)
-            .FirstOrDefaultAsync(vc => vc.Id == entity.Id);
+        var videoContentWithRelations = await videoContentRepository.GetByIdWithRelationsAsync(entity.Id);
 
         if (videoContentWithRelations == null)
         {
@@ -147,15 +137,7 @@ public class VideoContentManager(
 
         entity = await videoContentRepository.SaveAsync(entity);
 
-        await using var context = await contextFactory.CreateDbContextAsync();
-
-        var videoContentWithRelations = await context.VideoContents
-            .Include(vc => vc.TypeOfContentEntity)
-            .Include(vc => vc.DirectorEntity)
-            .Include(vc => vc.ImageEntity)
-            .Include(vc => vc.VideoContentsGenres)
-            .ThenInclude(vcg => vcg.GenreEntity)
-            .FirstOrDefaultAsync(vc => vc.Id == entity.Id);
+        var videoContentWithRelations = await videoContentRepository.GetByIdWithRelationsAsync(entity.Id);
 
         if (videoContentWithRelations == null)
         {
