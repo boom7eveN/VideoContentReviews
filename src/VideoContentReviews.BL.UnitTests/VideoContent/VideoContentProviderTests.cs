@@ -1,4 +1,5 @@
 ﻿using Moq;
+using VideoContentReviews.BL.Common.Exceptions;
 using VideoContentReviews.BL.Features.VideoContent.Providers;
 using VideoContentReviews.BL.UnitTests.Mappers;
 using VideoContentReviews.DataAccess.Entities;
@@ -151,7 +152,6 @@ public class VideoContentProviderTests
                 DirectorEntity = _directors[1],
                 ImageEntity = _images[1],
             }
-
         ];
 
         _videoContentGenres =
@@ -200,15 +200,68 @@ public class VideoContentProviderTests
     [Test]
     public async Task Get_All_Existing_Video_Content()
     {
-        _videoContentRepositoryMock.Setup(x => x.GetAllWithRelationsAsync()).ReturnsAsync(_videoContent);
+        _videoContentRepositoryMock.Setup(x
+            => x.GetAllWithRelationsAsync()).ReturnsAsync(_videoContent);
 
         var result = await _videoContentProvider.GetAllAsync();
         var contentIds = result.Select(x => x.Id).ToList();
-        
+
         Assert.That(result.Count, Is.EqualTo(2));
         Assert.That(contentIds, Is.Not.Null.Or.Empty);
         Assert.That(contentIds, Does.Contain(1));
         Assert.That(contentIds, Does.Contain(2));
         _videoContentRepositoryMock.Verify(repo => repo.GetAllWithRelationsAsync(), Times.Once);
+    }
+
+    [Test]
+    public async Task Get_All_Existing_Video_Content_When_Empty()
+    {
+        _videoContentRepositoryMock.Setup(x => x.GetAllWithRelationsAsync())
+            .ReturnsAsync(new List<VideoContentEntity>());
+
+        var result = await _videoContentProvider.GetAllAsync();
+
+        Assert.That(result, Is.Not.Null.Or.Empty);
+        _videoContentRepositoryMock.Verify(repo => repo.GetAllWithRelationsAsync(), Times.Once);
+    }
+
+    [Test]
+    public async Task Get_By_Id_When_Exists()
+    {
+        var target = _videoContent[1];
+        _videoContentRepositoryMock.Setup(x => x.GetByIdWithRelationsAsync(target.ExternalId))
+            .ReturnsAsync(_videoContent[1]);
+
+        var result = await _videoContentProvider.GetByIdAsync(target.ExternalId);
+
+        Assert.That(result, Is.Not.EqualTo(null));
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Name, Is.EqualTo(target.Name));
+            Assert.That(result.YearOfRelease, Is.EqualTo(target.YearOfRelease));
+            Assert.That(result.Description, Is.EqualTo(target.Description));
+            Assert.That(result.CreationTime, Is.EqualTo(target.CreationTime));
+            Assert.That(result.ModificationTime, Is.EqualTo(target.ModificationTime));
+        });
+        _videoContentRepositoryMock.Verify(repo =>
+            repo.GetByIdWithRelationsAsync(target.ExternalId), Times.Once);
+    }
+
+    [Test]
+    public void Get_By_Id_When_Not_Exists()
+    {
+        var targetGuid = Guid.Parse("bbbbbbbb-1234-1234-1234-999999900002");
+        _videoContentRepositoryMock
+            .Setup(x => x.GetByIdWithRelationsAsync(targetGuid))
+            .ReturnsAsync((VideoContentEntity?)null);
+        
+        var exception = Assert.ThrowsAsync<BusinessLogicException>(
+            async () => await _videoContentProvider.GetByIdAsync(targetGuid));
+        
+        Assert.That(exception.BlResultCode, Is.EqualTo(BLResultCode.VideoContentNotFound));
+        
+        _videoContentRepositoryMock.Verify(
+            repo => repo.GetByIdWithRelationsAsync(targetGuid), 
+            Times.Once);
     }
 }
