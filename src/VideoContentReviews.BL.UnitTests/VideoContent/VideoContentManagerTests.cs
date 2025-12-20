@@ -93,7 +93,7 @@ public class VideoContentManagerTests
             ImageEntity = _testImage
         };
     }
-    
+
 
     [Test]
     public async Task CreateVideoContentAsync_Success_ReturnsVideoContentModel()
@@ -109,7 +109,6 @@ public class VideoContentManagerTests
             ImageExternalId = _testImage.ExternalId,
             GenreExternalIds = _testGenres.Select(g => g.ExternalId).ToList()
         };
-
 
 
         _videoContentValidationServiceMock
@@ -183,8 +182,9 @@ public class VideoContentManagerTests
             .ThrowsAsync(new BusinessLogicException(BLResultCode.TypeOfContentNotFound));
 
         // act
-        var exception = Assert.ThrowsAsync<BusinessLogicException>(
-            async () => await _videoContentManager.CreateVideoContentAsync(model));
+        var exception =
+            Assert.ThrowsAsync<BusinessLogicException>(async () =>
+                await _videoContentManager.CreateVideoContentAsync(model));
 
         //assert
         Assert.That(exception.BlResultCode, Is.EqualTo(BLResultCode.TypeOfContentNotFound));
@@ -193,7 +193,6 @@ public class VideoContentManagerTests
         _videoContentRepositoryMock.Verify(
             x => x.SaveAsync(It.IsAny<VideoContentEntity>()), Times.Never);
     }
-
 
 
     [Test]
@@ -281,8 +280,8 @@ public class VideoContentManagerTests
             .ReturnsAsync((VideoContentEntity?)null);
 
         // act
-        var exception = Assert.ThrowsAsync<BusinessLogicException>(
-            async () => await _videoContentManager.UpdateVideoContentAsync(videoContentId, updateModel));
+        var exception = Assert.ThrowsAsync<BusinessLogicException>(async () =>
+            await _videoContentManager.UpdateVideoContentAsync(videoContentId, updateModel));
         //assert
         Assert.That(exception.BlResultCode, Is.EqualTo(BLResultCode.VideoContentNotFound));
 
@@ -291,7 +290,6 @@ public class VideoContentManagerTests
         _videoContentRepositoryMock.Verify(
             x => x.SaveAsync(It.IsAny<VideoContentEntity>()), Times.Never);
     }
-
 
 
     [Test]
@@ -322,7 +320,7 @@ public class VideoContentManagerTests
         _videoContentRepositoryMock.Verify(
             x => x.GetByIdAsync(videoContentId), Times.Once);
         _videoContentRepositoryMock.Verify(
-            x => x.DeleteAsync(It.Is<VideoContentEntity>(e => e.ExternalId == videoContentId)), 
+            x => x.DeleteAsync(It.Is<VideoContentEntity>(e => e.ExternalId == videoContentId)),
             Times.Once);
     }
 
@@ -337,8 +335,8 @@ public class VideoContentManagerTests
             .ReturnsAsync((VideoContentEntity?)null);
 
         // act
-        var exception = Assert.ThrowsAsync<BusinessLogicException>(
-            async () => await _videoContentManager.DeleteVideoContentAsync(videoContentId));
+        var exception = Assert.ThrowsAsync<BusinessLogicException>(async () =>
+            await _videoContentManager.DeleteVideoContentAsync(videoContentId));
 
         //assert
         Assert.That(exception.BlResultCode, Is.EqualTo(BLResultCode.VideoContentNotFound));
@@ -348,5 +346,4 @@ public class VideoContentManagerTests
         _videoContentRepositoryMock.Verify(
             x => x.DeleteAsync(It.IsAny<VideoContentEntity>()), Times.Never);
     }
-
 }

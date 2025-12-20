@@ -360,7 +360,7 @@ public class VideoContentRepositoryTests
         existing.Description = "Updated Description";
         var originalModificationTime = existing.ModificationTime;
 
-        await Task.Delay(10); 
+        await Task.Delay(10);
 
         var result = await _repository.SaveAsync(existing);
 

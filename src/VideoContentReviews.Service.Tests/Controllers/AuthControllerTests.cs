@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using VideoContentReviews.BL.Features.Auth.Entities;
+using VideoContentReviews.BL.Features.Auth.DTOs;
 using VideoContentReviews.Service.Controllers.Authorization.DTOs;
 using VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
@@ -11,13 +11,13 @@ public class AuthControllerTests : TestBase
     private const string ValidUsername = "testusertest";
     private const string ValidEmail = "testing@test.test";
     private const string ValidPassword = "CorrectP@ssw0rd1";
-    
+
     private const string EmptyString = "";
     private const string InvalidEmail = "invalidemail";
     private const string EmailWithoutAt = "emailwithoutat.com";
     private const string EmailWithoutDomain = "test@";
     private const string WeakPassword = "weak";
-    
+
     protected override async Task AdditionalOneTimeSetUp()
     {
         var request = new RegisterUserRequest
@@ -26,13 +26,13 @@ public class AuthControllerTests : TestBase
             Email = "test@test.test",
             Password = "P@ssw0rd"
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.RegisterUser, request);
-        var content = await response.Content.ReadFromJsonAsync<UserResponse>(); 
+        var content = await response.Content.ReadFromJsonAsync<UserResponse>();
     }
-    
-    
+
+
     [Test]
     public async Task Login_Success()
     {
@@ -56,13 +56,13 @@ public class AuthControllerTests : TestBase
             Email = "test@test.test",
             Password = ValidPassword
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.LoginUser, request);
-        
+
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
-    
+
     [Test]
     public async Task Login_UserNotFound_Failure()
     {
@@ -71,10 +71,10 @@ public class AuthControllerTests : TestBase
             Email = "neverusedmail@forregistration.esketit",
             Password = ValidPassword
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.LoginUser, request);
-        
+
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
 
@@ -82,8 +82,8 @@ public class AuthControllerTests : TestBase
     [TestCase(EmptyString, EmptyString)]
     [TestCase(ValidEmail, EmptyString)]
     [TestCase(InvalidEmail, EmptyString)]
-    [TestCase(InvalidEmail,ValidPassword)]
-    [TestCase(InvalidEmail,WeakPassword)]
+    [TestCase(InvalidEmail, ValidPassword)]
+    [TestCase(InvalidEmail, WeakPassword)]
     public async Task Login_Validation_Failure(string email, string password)
     {
         var request = new AuthorizeUserRequest
@@ -91,10 +91,10 @@ public class AuthControllerTests : TestBase
             Email = email,
             Password = password
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.LoginUser, request);
-        
+
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
 
@@ -108,15 +108,15 @@ public class AuthControllerTests : TestBase
         };
         var loginResponse = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.LoginUser, loginRequest);
-        var content = await loginResponse.Content.ReadFromJsonAsync<TokensResponse>(); 
+        var content = await loginResponse.Content.ReadFromJsonAsync<TokensResponse>();
         var request = new RefreshTokenRequest
         {
             RefreshToken = content!.RefreshToken!
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.RefreshToken, request);
-        
+
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
 
@@ -127,10 +127,10 @@ public class AuthControllerTests : TestBase
         {
             RefreshToken = "invalid"
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.RefreshToken, request);
-        
+
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
     }
 
@@ -143,23 +143,23 @@ public class AuthControllerTests : TestBase
             Email = "newuser@test.com",
             Password = "P@ssw0rd"
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.RegisterUser, request);
-        
+
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
-    
+
 
     [Test]
-    [TestCase(ValidUsername, EmptyString,  ValidPassword)]
-    [TestCase(ValidUsername, InvalidEmail,  ValidPassword)]
-    [TestCase(ValidUsername, EmailWithoutAt,  ValidPassword)]
-    [TestCase(ValidUsername, EmailWithoutDomain,  ValidPassword)]
-    [TestCase(ValidUsername, ValidEmail,  EmptyString)]
-    [TestCase(EmptyString, EmptyString,  EmptyString)]
-    [TestCase(ValidUsername, InvalidEmail,  WeakPassword)]
-    [TestCase(EmptyString, ValidEmail,  ValidPassword)]
+    [TestCase(ValidUsername, EmptyString, ValidPassword)]
+    [TestCase(ValidUsername, InvalidEmail, ValidPassword)]
+    [TestCase(ValidUsername, EmailWithoutAt, ValidPassword)]
+    [TestCase(ValidUsername, EmailWithoutDomain, ValidPassword)]
+    [TestCase(ValidUsername, ValidEmail, EmptyString)]
+    [TestCase(EmptyString, EmptyString, EmptyString)]
+    [TestCase(ValidUsername, InvalidEmail, WeakPassword)]
+    [TestCase(EmptyString, ValidEmail, ValidPassword)]
     public async Task Register_Validation_Failure(string username, string email, string password)
     {
         var request = new RegisterUserRequest
@@ -168,10 +168,10 @@ public class AuthControllerTests : TestBase
             Email = email,
             Password = password
         };
-        
+
         var response = await TestHttpClient.PostAsJsonAsync(
             AppEndpoints.Endpoints.RegisterUser, request);
-        
+
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
 }

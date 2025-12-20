@@ -11,10 +11,7 @@ public static class MapperHelper
     static MapperHelper()
     {
         ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-        var config = new MapperConfiguration(x =>
-            {
-                x.AddProfile<VideoContentBLProfile>();
-            },
+        var config = new MapperConfiguration(x => { x.AddProfile<VideoContentBLProfile>(); },
             loggerFactory);
         Mapper = config.CreateMapper();
     }

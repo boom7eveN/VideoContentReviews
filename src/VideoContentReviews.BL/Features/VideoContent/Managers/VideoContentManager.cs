@@ -36,7 +36,8 @@ public class VideoContentManager(
             throw new BusinessLogicException(BLResultCode.VideoContentAlreadyExists);
         }
 
-        var typeOfContent = await videoContentValidationService.ValidateAndGetTypeOfContentAsync(model.TypeOfContentExternalId);
+        var typeOfContent =
+            await videoContentValidationService.ValidateAndGetTypeOfContentAsync(model.TypeOfContentExternalId);
         var director = await videoContentValidationService.ValidateAndGetDirectorAsync(model.DirectorExternalId);
         var image = await videoContentValidationService.ValidateAndGetImageAsync(model.ImageExternalId);
         var genres = await videoContentValidationService.ValidateAndGetGenresAsync(model.GenreExternalIds);

@@ -21,7 +21,7 @@ public static class ServicesConfigurator
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IVideoContentRepository, VideoContentRepository>();
-        
+
         //videocontent validation service
         services.AddScoped<IVideoContentValidationService>(provider =>
             new VideoContentValidationService(
@@ -46,7 +46,7 @@ public static class ServicesConfigurator
                 provider.GetRequiredService<IVideoContentRepository>(),
                 provider.GetRequiredService<IMapper>()
             ));
-        
+
         //auth
         services.AddScoped<IAuthProvider>(x =>
             new AuthProvider(x.GetRequiredService<SignInManager<UserEntity>>(),
@@ -64,7 +64,7 @@ public static class ServicesConfigurator
             var mapper = provider.GetRequiredService<IMapper>();
             return new DirectorManager(repository, mapper);
         });
-        
+
         //content
         services.AddScoped<ITypeOfContentManager>(provider =>
         {
@@ -72,7 +72,7 @@ public static class ServicesConfigurator
             var mapper = provider.GetRequiredService<IMapper>();
             return new TypeOfContentManager(repository, mapper);
         });
-        
+
         //images
         services.AddScoped<IImageManager>(provider =>
         {
@@ -80,7 +80,7 @@ public static class ServicesConfigurator
             var mapper = provider.GetRequiredService<IMapper>();
             return new ImageManager(repository, mapper);
         });
-        
+
         //genres
         services.AddScoped<IGenreManager>(provider =>
         {

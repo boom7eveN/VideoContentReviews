@@ -254,14 +254,15 @@ public class VideoContentProviderTests
         _videoContentRepositoryMock
             .Setup(x => x.GetByIdWithRelationsAsync(targetGuid))
             .ReturnsAsync((VideoContentEntity?)null);
-        
-        var exception = Assert.ThrowsAsync<BusinessLogicException>(
-            async () => await _videoContentProvider.GetByIdAsync(targetGuid));
-        
+
+        var exception =
+            Assert.ThrowsAsync<BusinessLogicException>(async () =>
+                await _videoContentProvider.GetByIdAsync(targetGuid));
+
         Assert.That(exception.BlResultCode, Is.EqualTo(BLResultCode.VideoContentNotFound));
-        
+
         _videoContentRepositoryMock.Verify(
-            repo => repo.GetByIdWithRelationsAsync(targetGuid), 
+            repo => repo.GetByIdWithRelationsAsync(targetGuid),
             Times.Once);
     }
 }

@@ -14,7 +14,6 @@ public class VideoContentValidationService(
     IRepository<GenreEntity> genreRepository)
     : IVideoContentValidationService
 {
-
     public async Task<TypeOfContentEntity> ValidateAndGetTypeOfContentAsync(Guid externalId)
     {
         var typeOfContent = await typeOfContentRepository.GetByIdAsync(externalId);
@@ -50,6 +49,7 @@ public class VideoContentValidationService(
                     $"Genre with external ID {genreExternalId} not found");
             genres.Add(genre);
         }
+
         return genres;
     }
 

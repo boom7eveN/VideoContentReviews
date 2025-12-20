@@ -1,4 +1,4 @@
-﻿using VideoContentReviews.BL.Features.Auth.Entities;
+﻿using VideoContentReviews.BL.Features.Auth.DTOs;
 using VideoContentReviews.BL.Features.Users.DTOs;
 
 namespace VideoContentReviews.BL.Features.Auth;

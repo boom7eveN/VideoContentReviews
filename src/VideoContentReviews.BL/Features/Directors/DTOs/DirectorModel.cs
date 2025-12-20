@@ -1,4 +1,4 @@
-﻿namespace VideoContentReviews.BL.Features.Directors.Entities;
+﻿namespace VideoContentReviews.BL.Features.Directors.DTOs;
 
 public class DirectorModel
 {

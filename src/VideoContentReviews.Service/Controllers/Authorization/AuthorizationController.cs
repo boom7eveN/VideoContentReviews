@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using VideoContentReviews.BL.Features.Auth;
-using VideoContentReviews.BL.Features.Auth.Entities;
+using VideoContentReviews.BL.Features.Auth.DTOs;
 using VideoContentReviews.Service.Controllers.Authorization.DTOs;
 using VideoContentReviews.Service.Controllers.Users.DTOs.Responses;
 
