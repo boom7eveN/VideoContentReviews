@@ -2,49 +2,66 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
-using VideoContentReviews.Service.Tests.Helpers;
 
 namespace VideoContentReviews.Service.Tests;
 
 public class TestBase
 {
-    private readonly WebApplicationFactory<Program> _testServer;
-    protected HttpClient TestHttpClient => _testServer.CreateClient();
+    private WebApplicationFactory<Program>? _testServer;
+    private HttpClient? _httpClient;
 
-    public TestBase()
+    protected HttpClient TestHttpClient => _httpClient ??= TestServer.CreateClient();
+    protected WebApplicationFactory<Program> TestServer => _testServer ??= CreateTestServer();
+
+    private WebApplicationFactory<Program> CreateTestServer()
     {
-        var settings = TestSettingsHelper.GetSettings();
+        WebApplicationFactory<Program>? factory = null;
 
-        _testServer = new TestWebApplicationFactory(services =>
+        factory = new TestWebApplicationFactory(services =>
         {
             services.Replace(ServiceDescriptor.Scoped(_ =>
             {
                 var httpClientFactoryMock = new Mock<IHttpClientFactory>();
                 httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>()))
-                    .Returns(() => _testServer.CreateClient());
+                    .Returns(() => factory!.CreateClient());
                 return httpClientFactoryMock.Object;
             }));
 
-            services.PostConfigureAll<JwtBearerOptions>(options =>
-            {
-                var httpClient = new HttpClient();
-                options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                    $"{settings.IdentityServerUri}/.well-known/openid-configuration",
-                    new OpenIdConnectConfigurationRetriever(),
-                    new HttpDocumentRetriever(httpClient)
+            services.PostConfigure<JwtBearerOptions>(
+                Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+                options =>
+                {
+                    options.Authority = null;
+                    options.MetadataAddress = null;
+                    options.ConfigurationManager = null;
+                    options.Configuration = new Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfiguration();
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        RequireHttps = false,
-                        SendAdditionalHeaderData = true
-                    });
-            });
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = false,
+                        SignatureValidator = (token, _) => new Microsoft.IdentityModel.JsonWebTokens.JsonWebToken(token),
+                        NameClaimType = System.Security.Claims.ClaimTypes.Name,
+                        RoleClaimType = System.Security.Claims.ClaimTypes.Role
+                    };
+                    options.RequireHttpsMetadata = false;
+                });
         });
+
+        return factory;
     }
 
-    public T? GetService<T>() where T : notnull => _testServer.Services.GetRequiredService<T>();
+    public T? GetService<T>() where T : notnull => TestServer.Services.GetRequiredService<T>();
+
+    [SetUp]
+    public virtual void SetUp()
+    {
+        _httpClient = null;
+    }
 
     [OneTimeTearDown]
-    public void OneTimeTearDown() => _testServer.Dispose();
+    public void OneTimeTearDown() => _testServer?.Dispose();
 }

@@ -1,4 +1,4 @@
-﻿namespace VideoContentReviews.Service.Tests;
+namespace VideoContentReviews.Service.Tests;
 
 public static class AppEndpoints
 {
@@ -8,5 +8,6 @@ public static class AppEndpoints
         public const string LoginUser = "Authorization/login";
         public const string RefreshToken = "Authorization/refresh";
         public const string VideoContent = "VideoContent";
+        public const string VideoContentCreate = "VideoContent/create";
     }
 }
