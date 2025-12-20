@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 namespace VideoContentReviews.Service.Tests.Helpers;
@@ -17,7 +18,6 @@ public static class ConfigurationHelper
             .SetBasePath(serviceProjectPath)
             .AddJsonFile("appsettings.json", optional: false)
             .AddJsonFile("appsettings.Development.json", optional: true)
-            .AddEnvironmentVariables()
             .Build();
     }
 }

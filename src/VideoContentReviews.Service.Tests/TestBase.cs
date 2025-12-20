@@ -5,37 +5,29 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Moq;
-using Npgsql;
-using Respawn;
-using Respawn.Graph;
 using VideoContentReviews.Service.Tests.Helpers;
 
 namespace VideoContentReviews.Service.Tests;
 
-
 public class TestBase
 {
-    protected readonly WebApplicationFactory<Program> TestServer;
-
-    protected static Respawner Respawner;
-    
-    private HttpClient? _client;
-    protected HttpClient TestHttpClient => _client ??= TestServer.CreateClient();
+    private readonly WebApplicationFactory<Program> _testServer;
+    protected HttpClient TestHttpClient => _testServer.CreateClient();
 
     public TestBase()
     {
         var settings = TestSettingsHelper.GetSettings();
 
-        TestServer = new TestWebApplicationFactory(services =>
+        _testServer = new TestWebApplicationFactory(services =>
         {
             services.Replace(ServiceDescriptor.Scoped(_ =>
             {
                 var httpClientFactoryMock = new Mock<IHttpClientFactory>();
                 httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>()))
-                    .Returns(() => TestHttpClient);
+                    .Returns(() => _testServer.CreateClient());
                 return httpClientFactoryMock.Object;
             }));
-            
+
             services.PostConfigureAll<JwtBearerOptions>(options =>
             {
                 var httpClient = new HttpClient();
@@ -50,38 +42,9 @@ public class TestBase
             });
         });
     }
-    
-    public T GetService<T>() where T : notnull  => TestServer.Services.GetRequiredService<T>();
 
-    [OneTimeSetUp]
-    public async Task OneTimeSetUp()
-    {
-        var settings = TestSettingsHelper.GetSettings();
-        await using var conn = new NpgsqlConnection(settings.VideoContentReviewsDbConnectionString);
-        await conn.OpenAsync();
+    public T? GetService<T>() where T : notnull => _testServer.Services.GetRequiredService<T>();
 
-        Respawner = await Respawner.CreateAsync(conn, new RespawnerOptions
-        {
-            DbAdapter = DbAdapter.Postgres,
-            SchemasToInclude = ["public"],
-            TablesToIgnore = [new Table("public","__EFMigrationsHistory")]
-        });
-        await AdditionalOneTimeSetUp();
-    }
-    
-    protected virtual Task AdditionalOneTimeSetUp()
-    {
-        return Task.CompletedTask;
-    }
-    
     [OneTimeTearDown]
-    public async Task OneTimeTearDown()
-    {
-        var settings = TestSettingsHelper.GetSettings();
-        await using var conn = new NpgsqlConnection(settings.VideoContentReviewsDbConnectionString);
-        await conn.OpenAsync();
-        await Respawner.ResetAsync(conn);
-        await TestServer.DisposeAsync();
-    }
-    
+    public void OneTimeTearDown() => _testServer.Dispose();
 }

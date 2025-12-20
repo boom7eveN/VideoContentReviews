@@ -15,22 +15,20 @@ public class TestWebApplicationFactory(Action<IServiceCollection>? configureServ
         var testProjectDirectory = Path.GetDirectoryName(assemblyLocation)!;
         var serviceProjectPath = Path.GetFullPath(Path.Combine(
             testProjectDirectory,
-            "..", "..", "..", "..", 
+            "..", "..", "..", "..",
             "VideoContentReviews.Service"));
         return serviceProjectPath;
     }
-    
+
     protected override IHost CreateHost(IHostBuilder builder)
     {
         var serviceProjectPath = GetServiceProjectPath();
-        
         var originalDirectory = Directory.GetCurrentDirectory();
-        
+
         try
         {
             Directory.SetCurrentDirectory(serviceProjectPath);
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
-            
             return base.CreateHost(builder);
         }
         finally
@@ -38,23 +36,23 @@ public class TestWebApplicationFactory(Action<IServiceCollection>? configureServ
             Directory.SetCurrentDirectory(originalDirectory);
         }
     }
-    
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         var serviceProjectPath = GetServiceProjectPath();
-        
+
         builder.UseContentRoot(serviceProjectPath);
-        
-        builder.ConfigureAppConfiguration((config) =>
+
+        builder.ConfigureAppConfiguration((context, config) =>
         {
             config.SetBasePath(serviceProjectPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
         });
-        
+
         builder.ConfigureServices(services => configureServices?.Invoke(services));
-        
+
         builder.UseEnvironment("Development");
     }
 }
