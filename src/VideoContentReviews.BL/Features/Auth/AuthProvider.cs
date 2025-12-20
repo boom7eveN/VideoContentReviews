@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Duende.IdentityModel.Client;
 using Duende.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
