@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using VideoContentReviews.BL.Common.Exceptions;
-using VideoContentReviews.BL.Features.Directors.Entities;
+using VideoContentReviews.BL.Features.Directors.DTOs;
 using VideoContentReviews.BL.Features.Directors.Validators;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Repositories;

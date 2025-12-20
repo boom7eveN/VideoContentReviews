@@ -1,4 +1,4 @@
-﻿using VideoContentReviews.BL.Features.Genres.Entities;
+﻿using VideoContentReviews.BL.Features.Genres.DTOs;
 
 namespace VideoContentReviews.BL.Features.Genres.Managers;
 

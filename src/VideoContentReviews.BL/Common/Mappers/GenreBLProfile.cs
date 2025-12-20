@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using VideoContentReviews.BL.Features.Genres.Entities;
+using VideoContentReviews.BL.Features.Genres.DTOs;
 using VideoContentReviews.DataAccess.Entities;
 
 namespace VideoContentReviews.BL.Common.Mappers;

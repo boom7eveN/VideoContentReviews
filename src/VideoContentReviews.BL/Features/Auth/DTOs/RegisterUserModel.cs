@@ -1,6 +1,6 @@
 ﻿using VideoContentReviews.DataAccess.Entities.Primitives;
 
-namespace VideoContentReviews.BL.Features.Auth.Entities;
+namespace VideoContentReviews.BL.Features.Auth.DTOs;
 
 public class RegisterUserModel
 {

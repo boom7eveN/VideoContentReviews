@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using VideoContentReviews.BL.Features.Auth.Entities;
+using VideoContentReviews.BL.Features.Auth.DTOs;
 
 namespace VideoContentReviews.BL.Features.Auth.Validators;
 

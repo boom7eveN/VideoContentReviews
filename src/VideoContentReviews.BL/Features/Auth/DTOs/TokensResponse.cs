@@ -1,4 +1,4 @@
-﻿namespace VideoContentReviews.BL.Features.Auth.Entities;
+﻿namespace VideoContentReviews.BL.Features.Auth.DTOs;
 
 public class TokensResponse
 {

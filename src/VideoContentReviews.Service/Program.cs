@@ -33,3 +33,5 @@ var repositoryInitializer = new RepositoryInitializer(settings);
 await repositoryInitializer.InitializeRepository(app);
 app.MapControllers();
 app.Run();
+
+public partial class Program;

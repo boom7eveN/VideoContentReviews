@@ -2,6 +2,7 @@
 using Duende.IdentityServer.Extensions;
 using VideoContentReviews.BL.Common.Exceptions;
 using VideoContentReviews.BL.Features.VideoContent.DTOs;
+using VideoContentReviews.BL.Features.VideoContent.ValidationServices;
 using VideoContentReviews.BL.Features.VideoContent.Validators;
 using VideoContentReviews.DataAccess.Entities;
 using VideoContentReviews.DataAccess.Repositories;
@@ -11,10 +12,7 @@ namespace VideoContentReviews.BL.Features.VideoContent.Managers;
 
 public class VideoContentManager(
     IVideoContentRepository videoContentRepository,
-    IRepository<TypeOfContentEntity> typeOfContentRepository,
-    IRepository<DirectorEntity> directorRepository,
-    IRepository<ImageEntity> imageRepository,
-    IRepository<GenreEntity> genreRepository,
+    IVideoContentValidationService videoContentValidationService,
     IRepository<VideoContentGenreEntity> videoContentGenreRepository,
     IMapper mapper)
     : IVideoContentManager
@@ -38,36 +36,11 @@ public class VideoContentManager(
             throw new BusinessLogicException(BLResultCode.VideoContentAlreadyExists);
         }
 
-        var typeOfContent = await typeOfContentRepository.GetByIdAsync(model.TypeOfContentExternalId);
-        if (typeOfContent == null)
-        {
-            throw new BusinessLogicException(BLResultCode.TypeOfContentNotFound);
-        }
-
-        var director = await directorRepository.GetByIdAsync(model.DirectorExternalId);
-        if (director == null)
-        {
-            throw new BusinessLogicException(BLResultCode.DirectorNotFound);
-        }
-
-        var image = await imageRepository.GetByIdAsync(model.ImageExternalId);
-        if (image == null)
-        {
-            throw new BusinessLogicException(BLResultCode.ImageNotFound);
-        }
-
-        var genres = new List<GenreEntity>();
-        foreach (var genreExternalId in model.GenreExternalIds)
-        {
-            var genre = await genreRepository.GetByIdAsync(genreExternalId);
-            if (genre == null)
-            {
-                throw new BusinessLogicException(BLResultCode.GenreNotFound,
-                    $"Genre with external ID {genreExternalId} not found");
-            }
-
-            genres.Add(genre);
-        }
+        var typeOfContent =
+            await videoContentValidationService.ValidateAndGetTypeOfContentAsync(model.TypeOfContentExternalId);
+        var director = await videoContentValidationService.ValidateAndGetDirectorAsync(model.DirectorExternalId);
+        var image = await videoContentValidationService.ValidateAndGetImageAsync(model.ImageExternalId);
+        var genres = await videoContentValidationService.ValidateAndGetGenresAsync(model.GenreExternalIds);
 
         var entity = mapper.Map<VideoContentEntity>(model);
         entity.TypeOfContentId = typeOfContent.Id;

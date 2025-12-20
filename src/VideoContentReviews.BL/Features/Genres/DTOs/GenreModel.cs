@@ -1,4 +1,4 @@
-﻿namespace VideoContentReviews.BL.Features.Genres.Entities;
+﻿namespace VideoContentReviews.BL.Features.Genres.DTOs;
 
 public class GenreModel
 {
