@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\VideoContentReviews.DataAccess\VideoContentReviews.DataAccess.csproj"/>
+        <ProjectReference Include="..\..\VideoContentReviews.DataAccess\VideoContentReviews.DataAccess.csproj"/>
     </ItemGroup>
 
 </Project>
